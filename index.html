@@ -24,7 +24,7 @@
 
         h1 {
             font-size: 60px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         h2 {
@@ -53,27 +53,54 @@
 
         #gameScreen {
             display: none;
+            padding: 30px;
+        }
+
+        .companies {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
         }
 
         .company {
-            display: inline-block;
             background: #222;
             border-radius: 12px;
             padding: 20px;
-            margin: 10px;
-            width: 180px;
+            width: 230px;
+        }
+
+        .company h2 {
+            color: white;
         }
 
         .money {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: bold;
+            margin: 15px;
+        }
+
+        .stock {
+            background: #333;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 7px;
+        }
+
+        .stock-name {
+            font-weight: bold;
+        }
+
+        .stock-value {
+            color: #aaa;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- מסך פתיחה -->
+    <!-- START SCREEN -->
     <div id="startScreen" class="screen">
 
         <h1>ROCH</h1>
@@ -92,14 +119,14 @@
     </div>
 
 
-    <!-- מסך המשחק -->
-    <div id="gameScreen" class="screen">
+    <!-- GAME SCREEN -->
+    <div id="gameScreen">
 
         <h1>ROCH</h1>
 
-        <h2 id="roundText">Round 1</h2>
+        <h2 id="roundText"></h2>
 
-        <div id="companies"></div>
+        <div id="companies" class="companies"></div>
 
     </div>
 
@@ -109,63 +136,171 @@
         let totalRounds = 3;
         let currentRound = 1;
 
+
+        // סוגי המניות במשחק
+        const stockTypes = [
+            { name: "Stock A", value: 400 },
+            { name: "Stock B", value: 500 },
+            { name: "Stock C", value: 600 },
+            { name: "Stock D", value: 700 },
+            { name: "Stock E", value: 800 },
+            { name: "Stock F", value: 900 }
+        ];
+
+
+        // החברות
         const companies = [
             {
                 name: "Your Company",
-                money: 5000
+                money: 0,
+                stocks: []
             },
             {
                 name: "Bot 1",
-                money: 5000
+                money: 0,
+                stocks: []
             },
             {
                 name: "Bot 2",
-                money: 5000
+                money: 0,
+                stocks: []
             },
             {
                 name: "Bot 3",
-                money: 5000
+                money: 0,
+                stocks: []
             }
         ];
 
 
+        // ערבוב מערך
+        function shuffle(array) {
+
+            let result = [...array];
+
+            for (let i = result.length - 1; i > 0; i--) {
+
+                let j = Math.floor(Math.random() * (i + 1));
+
+                [result[i], result[j]] =
+                [result[j], result[i]];
+            }
+
+            return result;
+        }
+
+
+        // יצירת 5 מניות אקראיות
+        function drawStocks() {
+
+            let stocks = [];
+
+            for (let i = 0; i < 5; i++) {
+
+                let randomStock =
+                    stockTypes[
+                        Math.floor(Math.random() * stockTypes.length)
+                    ];
+
+                stocks.push({
+                    name: randomStock.name,
+                    value: randomStock.value
+                });
+            }
+
+            return stocks;
+        }
+
+
+        // התחלת המשחק
         function startGame() {
 
-            totalRounds = Number(
-                document.getElementById("roundSelect").value
-            );
+            totalRounds =
+                Number(document.getElementById("roundSelect").value);
 
             currentRound = 1;
 
+            // חלוקת 5 מניות לכל חברה
+            companies.forEach(company => {
+
+                company.stocks = drawStocks();
+
+                // חישוב שווי המניות
+                let stockTotal = company.stocks.reduce(
+                    (sum, stock) => sum + stock.value,
+                    0
+                );
+
+                // השלמת החברה ל-5000
+                company.money = 5000 - stockTotal;
+            });
+
+
             document.getElementById("startScreen").style.display = "none";
-            document.getElementById("gameScreen").style.display = "flex";
+
+            document.getElementById("gameScreen").style.display = "block";
 
             updateGameScreen();
         }
 
 
+        // הצגת המשחק
         function updateGameScreen() {
 
             document.getElementById("roundText").textContent =
                 "Round " + currentRound + " / " + totalRounds;
+
 
             const container =
                 document.getElementById("companies");
 
             container.innerHTML = "";
 
+
             companies.forEach(company => {
 
-                const div = document.createElement("div");
+                const div =
+                    document.createElement("div");
 
                 div.className = "company";
 
+
+                let stocksHTML = "";
+
+                company.stocks.forEach(stock => {
+
+                    stocksHTML += `
+                        <div class="stock">
+                            <div class="stock-name">
+                                ${stock.name}
+                            </div>
+
+                            <div class="stock-value">
+                                Base value: $${stock.value}
+                            </div>
+                        </div>
+                    `;
+
+                });
+
+
                 div.innerHTML = `
+
                     <h2>${company.name}</h2>
-                    <div class="money">$${company.money}</div>
+
+                    <div class="money">
+                        Cash: $${company.money}
+                    </div>
+
+                    <h3>Stocks</h3>
+
+                    ${stocksHTML}
+
                 `;
 
+
                 container.appendChild(div);
+
             });
         }
 
