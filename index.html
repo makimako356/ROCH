@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ROCH — Richest Only Come Here</title>
 
 <style>
@@ -10,168 +10,280 @@
 
 body{
     margin:0;
-    font-family:Arial,sans-serif;
-    background:#dfeaf3;
-    color:#17202a;
-}
-
-header{
-    background:#243b53;
-    color:white;
-    padding:18px;
-    text-align:center;
-}
-
-header h1{margin:0 0 5px;font-size:34px}
-header p{margin:0;opacity:.85}
-
-#topBar{
-    display:flex;
-    justify-content:center;
-    gap:12px;
-    flex-wrap:wrap;
-    padding:15px;
-    background:#f7fafc;
-    border-bottom:1px solid #cbd5e0;
-}
-
-.infoBox{
-    background:white;
-    padding:10px 16px;
-    border-radius:10px;
-    box-shadow:0 2px 6px #0002;
-    font-weight:bold;
-}
-
-#game{
-    max-width:1500px;
-    margin:auto;
-    padding:20px;
-}
-
-#actions{
-    background:white;
-    border-radius:15px;
-    padding:15px;
-    margin-bottom:20px;
-    box-shadow:0 3px 10px #0002;
-    text-align:center;
-}
-
-#status{
-    font-size:20px;
-    font-weight:bold;
-    margin-bottom:10px;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#dcecf7;
+    color:#17212b;
 }
 
 button{
-    border:0;
-    border-radius:8px;
-    padding:9px 13px;
+    font-family:inherit;
     cursor:pointer;
-    font-weight:bold;
-    background:#3182ce;
-    color:white;
-    margin:3px;
 }
 
-button:hover:not(:disabled){background:#2b6cb0}
-button:disabled{opacity:.45;cursor:not-allowed}
+header{
+    background:#173f5f;
+    color:white;
+    padding:16px 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 3px 10px #0003;
+}
 
-button.sell{background:#e53e3e}
-button.open{background:#38a169}
-button.close{background:#718096}
-button.buy{background:#805ad5}
-button.bank{background:#dd6b20}
-button.keep{background:#319795}
-button.big{font-size:18px;padding:13px 22px}
+header h1{
+    margin:0;
+    font-size:28px;
+}
+
+#topInfo{
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+    font-weight:bold;
+}
+
+.screen{
+    padding:18px;
+    max-width:1500px;
+    margin:auto;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* START */
+
+#startScreen{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#dcecf7;
+}
+
+.startBox{
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    width:min(600px,90%);
+    text-align:center;
+    box-shadow:0 8px 30px #0002;
+}
+
+.startBox h1{
+    font-size:50px;
+    margin:0 0 5px;
+    color:#173f5f;
+}
+
+.startBox p{
+    color:#555;
+}
+
+.roundButtons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:30px;
+    flex-wrap:wrap;
+}
+
+.roundButtons button{
+    padding:16px 30px;
+    border:0;
+    border-radius:12px;
+    background:#2f80ed;
+    color:white;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.roundButtons button:hover{
+    background:#1967c5;
+}
+
+/* BOARD */
+
+.board{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
 
 .company{
     background:white;
-    border-radius:15px;
+    border-radius:16px;
     padding:15px;
-    margin-bottom:20px;
-    box-shadow:0 3px 10px #0002;
+    box-shadow:0 3px 12px #0002;
     border:3px solid transparent;
 }
 
-.company.active{border-color:#3182ce}
-
-.company h2{margin:0 0 8px}
-
-.companyStats{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-bottom:12px;
+.company.current{
+    border-color:#2f80ed;
+    box-shadow:0 0 0 3px #2f80ed33,0 4px 15px #0002;
 }
 
-.stat{
-    background:#edf2f7;
-    padding:7px 12px;
-    border-radius:8px;
+.company.bot{
+    background:#f9fbfd;
+}
+
+.companyHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.companyHeader h2{
+    margin:0;
 }
 
 .cash{
-    color:#16844a;
+    font-size:20px;
     font-weight:bold;
+    color:#19713a;
 }
 
-.stockGrid{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(180px,1fr));
-    gap:10px;
+.stockArea{
+    margin-top:12px;
 }
 
 .stock{
-    border:2px solid #cbd5e0;
+    background:#f4f7fa;
+    border:2px solid #b7c6d2;
     border-radius:10px;
-    padding:10px;
-    background:#f8fafc;
+    padding:9px;
+    margin-bottom:7px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
 }
 
-.stock.openStock{
-    border-color:#38a169;
-    background:#f0fff4;
+.stock.open{
+    border-color:#f2994a;
+    background:#fff6ed;
 }
 
-.stock.closedStock{
-    border-color:#a0aec0;
+.stockInfo{
+    text-align:right;
 }
 
 .stockName{
     font-weight:bold;
-    font-size:18px;
+    font-size:17px;
 }
 
-.stockValue{margin:4px 0}
-
-.stockStatus{
+.stockBase{
     font-size:13px;
+    color:#666;
+}
+
+.openBadge{
+    color:#b65300;
     font-weight:bold;
-    margin-bottom:5px;
+    font-size:13px;
 }
 
-.openText{color:#16844a}
-.closedText{color:#718096}
+#actionPanel{
+    margin-top:16px;
+    background:white;
+    padding:16px;
+    border-radius:16px;
+    box-shadow:0 3px 12px #0002;
+}
 
-.logBox{
-    background:#1a202c;
-    color:#e2e8f0;
-    border-radius:12px;
-    padding:15px;
-    height:230px;
+#actionPanel h2{
+    margin-top:0;
+}
+
+.actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.actions button{
+    border:0;
+    padding:10px 14px;
+    border-radius:9px;
+    background:#2f80ed;
+    color:white;
+    font-weight:bold;
+}
+
+.actions button:hover:not(:disabled){
+    background:#1769c2;
+}
+
+.actions button:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+#turnStatus{
+    margin-bottom:10px;
+    font-weight:bold;
+}
+
+/* LOG */
+
+#logPanel{
+    margin-top:16px;
+    background:#101820;
+    color:#e9f3fa;
+    border-radius:16px;
+    padding:16px;
+    box-shadow:0 3px 12px #0003;
+}
+
+#logPanel h2{
+    margin-top:0;
+    color:white;
+}
+
+#gameLog{
+    height:300px;
     overflow-y:auto;
-    margin-top:20px;
-    font-family:monospace;
+    background:#071018;
+    border-radius:10px;
+    padding:10px;
+    font-family:Consolas,monospace;
+    font-size:14px;
 }
 
-.logLine{margin-bottom:4px}
+.logLine{
+    padding:7px 4px;
+    border-bottom:1px solid #ffffff12;
+}
 
-.overlay{
+.logLine strong{
+    color:#fff;
+}
+
+.logGood{
+    color:#7ee787;
+}
+
+.logBad{
+    color:#ff8f8f;
+}
+
+.logInfo{
+    color:#8ecbff;
+}
+
+.logMoney{
+    color:#ffd866;
+}
+
+/* MODAL */
+
+.modalOverlay{
     position:fixed;
     inset:0;
-    background:#0009;
+    background:#0008;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -180,226 +292,245 @@ button.big{font-size:18px;padding:13px 22px}
 
 .modal{
     background:white;
+    width:min(650px,90%);
+    max-height:90vh;
+    overflow:auto;
     border-radius:18px;
-    padding:30px;
-    max-width:600px;
-    width:90%;
-    text-align:center;
-    box-shadow:0 10px 40px #0006;
+    padding:25px;
+    box-shadow:0 10px 40px #0005;
 }
 
-.choiceButtons{
+.modal h2{
+    margin-top:0;
+    color:#173f5f;
+}
+
+.modalButtons{
     display:flex;
-    justify-content:center;
-    gap:15px;
+    gap:10px;
     flex-wrap:wrap;
+    margin-top:20px;
 }
 
-.hidden{display:none!important}
-
-#startScreen{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.modalButtons button{
+    border:0;
+    padding:12px 18px;
+    border-radius:10px;
+    background:#2f80ed;
+    color:white;
+    font-weight:bold;
 }
 
-.startBox{
-    background:white;
-    padding:40px;
-    border-radius:20px;
+.modalButtons button.secondary{
+    background:#777;
+}
+
+.resultsTable{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+.resultsTable th,
+.resultsTable td{
+    border:1px solid #ccd6df;
+    padding:9px;
     text-align:center;
-    box-shadow:0 5px 25px #0003;
 }
 
-.roundChoice button{
-    font-size:20px;
-    padding:15px 25px;
+.resultsTable th{
+    background:#edf4f9;
 }
 
-@media(max-width:800px){
-    .stockGrid{grid-template-columns:repeat(2,minmax(150px,1fr))}
-}
+/* RESPONSIVE */
 
-@media(max-width:550px){
-    .stockGrid{grid-template-columns:1fr}
+@media(max-width:850px){
+    .board{
+        grid-template-columns:1fr;
+    }
+
+    header{
+        flex-direction:column;
+        gap:10px;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<!-- START SCREEN -->
 <div id="startScreen">
+
     <div class="startBox">
+
         <h1>ROCH</h1>
+
         <h2>Richest Only Come Here</h2>
-        <p>Become the most successful company.</p>
 
-        <h3>בחר מספר סיבובים:</h3>
+        <p>
+            אתה מנהל חברה ומתחרה מול 3 חברות מחשב.
+            קנה מניות, מכור, פתח וסגור מניות למסחר,
+            וצבור כמה שיותר כסף.
+        </p>
 
-        <div class="roundChoice">
-            <button onclick="startGame(3)">3</button>
-            <button onclick="startGame(5)">5</button>
-            <button onclick="startGame(10)">10</button>
+        <h3>כמה סיבובים?</h3>
+
+        <div class="roundButtons">
+            <button onclick="startGame(3)">3 סיבובים</button>
+            <button onclick="startGame(5)">5 סיבובים</button>
+            <button onclick="startGame(10)">10 סיבובים</button>
         </div>
+
     </div>
+
 </div>
 
+
+<!-- GAME -->
 <div id="gameScreen" class="hidden">
 
 <header>
+
     <h1>ROCH</h1>
-    <p>Richest Only Come Here</p>
+
+    <div id="topInfo">
+        <span id="roundInfo"></span>
+        <span id="turnInfo"></span>
+        <span id="currentInfo"></span>
+    </div>
+
 </header>
 
-<div id="topBar">
-    <div class="infoBox">סיבוב: <span id="roundDisplay">1</span></div>
-    <div class="infoBox">תור: <span id="turnDisplay">1</span></div>
-    <div class="infoBox">תור של: <span id="currentPlayerDisplay"></span></div>
-    <div class="infoBox">סה"כ סיבובים: <span id="totalRoundsDisplay"></span></div>
-</div>
 
-<div id="game">
+<div class="screen">
 
-    <div id="actions">
-        <div id="status"></div>
-        <div id="actionButtons"></div>
+    <div id="board" class="board"></div>
+
+    <div id="actionPanel">
+
+        <h2>פעולות</h2>
+
+        <div id="turnStatus"></div>
+
+        <div id="actions" class="actions"></div>
+
     </div>
 
-    <div id="companies"></div>
 
-    <div class="logBox" id="log"></div>
+    <div id="logPanel">
 
-</div>
-</div>
+        <h2>📜 יומן המשחק</h2>
 
-<div id="roundModal" class="overlay hidden">
-    <div class="modal">
-        <h2>הסיבוב נגמר!</h2>
-        <p id="roundReason"></p>
-        <p>עכשיו אפשר לבחור אם למכור את כל המניות לבנק או לשמור אותן.</p>
-        <div id="roundChoiceButtons" class="choiceButtons"></div>
+        <div id="gameLog"></div>
+
     </div>
+
 </div>
 
-<div id="gameOverModal" class="overlay hidden">
-    <div class="modal">
-        <h2>ROCH — המשחק נגמר!</h2>
-        <div id="finalResults"></div>
-        <button class="big" onclick="location.reload()">משחק חדש</button>
-    </div>
 </div>
+
+
+<!-- MODAL -->
+<div id="modalOverlay" class="modalOverlay hidden">
+
+    <div id="modal" class="modal"></div>
+
+</div>
+
 
 <script>
 
-/* =========================
-   מניות
-========================= */
+/* =========================================================
+   STOCK TYPES
+========================================================= */
 
-const stockTypes=[
+const stockTypes = [
+
     {
-        name:"Stock A",
-        value:400,
+        id:"A",
+        name:"מניית A",
+        base:400,
         changes:[-100,-50,0,50,100,200]
     },
+
     {
-        name:"Stock B",
-        value:500,
+        id:"B",
+        name:"מניית B",
+        base:500,
         changes:[-200,-100,-50,50,100,300]
     },
+
     {
-        name:"Stock C",
-        value:600,
+        id:"C",
+        name:"מניית C",
+        base:600,
         changes:[-50,0,50,100,150,200]
     },
+
     {
-        name:"Stock D",
-        value:700,
+        id:"D",
+        name:"מניית D",
+        base:700,
         changes:[-200,-100,0,100,200,400]
     },
+
     {
-        name:"Stock E",
-        value:800,
+        id:"E",
+        name:"מניית E",
+        base:800,
         changes:[-300,-100,0,100,200,500]
     },
+
     {
-        name:"Stock F",
-        value:900,
+        id:"F",
+        name:"מניית F",
+        base:900,
         changes:[-400,-200,-50,100,300,600]
     }
+
 ];
 
-const STOCK_COPIES=10;
 
-const MONEY_VALUES=[100,200,300,400,500];
-const MONEY_CARDS_PER_VALUE=30;
+/* =========================================================
+   MONEY
+========================================================= */
 
-/* =========================
-   מצב המשחק
-========================= */
+const moneyValues = [
+    100,
+    200,
+    300,
+    400,
+    500
+];
 
-let totalRounds=3;
-let currentRound=1;
-let turnNumber=1;
-let currentPlayer=0;
 
-let companies=[];
+/* =========================================================
+   GAME VARIABLES
+========================================================= */
 
-let stockDeck=[];
-let bankStocks=[];
+let players = [];
 
-let moneyDeck=[];
+let stockDeck = [];
 
-let incomeRolled=false;
-let roundEnding=false;
-let gameOver=false;
-let lastActionTaken=false;
+let bankStocks = [];
 
-/* =========================
-   שחקנים
-========================= */
+let moneyDeck = [];
 
-function createPlayers(){
+let totalRounds = 3;
 
-    companies=[
-        {
-            name:"Your Company",
-            bot:false,
-            cash:0,
-            stocks:[],
-            nothingTurns:0,
-            scoreHistory:[]
-        },
-        {
-            name:"Bot Alpha",
-            bot:true,
-            cash:0,
-            stocks:[],
-            nothingTurns:0,
-            scoreHistory:[]
-        },
-        {
-            name:"Bot Beta",
-            bot:true,
-            cash:0,
-            stocks:[],
-            nothingTurns:0,
-            scoreHistory:[]
-        },
-        {
-            name:"Bot Gamma",
-            bot:true,
-            cash:0,
-            stocks:[],
-            nothingTurns:0,
-            scoreHistory:[]
-        }
-    ];
-}
+let currentRound = 1;
 
-/* =========================
-   ערבוב
-========================= */
+let currentPlayer = 0;
+
+let turnNumber = 1;
+
+let gameOver = false;
+
+
+/* =========================================================
+   UTILITIES
+========================================================= */
 
 function shuffle(array){
 
@@ -408,1476 +539,1729 @@ function shuffle(array){
         const j=Math.floor(Math.random()*(i+1));
 
         [array[i],array[j]]=[array[j],array[i]];
+
     }
+
+    return array;
 }
 
-/* =========================
-   חפיסת מניות
-========================= */
+
+function formatMoney(value){
+
+    return "$" + value.toLocaleString("en-US");
+
+}
+
+
+function formatChange(change){
+
+    if(change > 0){
+        return `<span class="logGood">📈 עלייה של ${formatMoney(change)}</span>`;
+    }
+
+    if(change < 0){
+        return `<span class="logBad">📉 ירידה של ${formatMoney(Math.abs(change))}</span>`;
+    }
+
+    return `<span class="logInfo">⚪ ללא שינוי</span>`;
+}
+
+
+function playerName(player){
+
+    return player.name;
+}
+
+
+/* =========================================================
+   LOG
+========================================================= */
+
+function log(message,className=""){
+
+    const container=document.getElementById("gameLog");
+
+    const line=document.createElement("div");
+
+    line.className="logLine "+className;
+
+    const time=new Date().toLocaleTimeString("he-IL",{
+        hour:"2-digit",
+        minute:"2-digit",
+        second:"2-digit"
+    });
+
+    line.innerHTML=`<span style="opacity:.45">[${time}]</span> ${message}`;
+
+    container.appendChild(line);
+
+    container.scrollTop=container.scrollHeight;
+
+}
+
+
+/* =========================================================
+   CREATE PLAYERS
+========================================================= */
+
+function createPlayers(){
+
+    players=[
+
+        {
+            id:0,
+            name:"החברה שלך",
+            isBot:false,
+            cash:5000,
+            stocks:[],
+            openStocks:new Set(),
+            inactiveTurns:0
+        },
+
+        {
+            id:1,
+            name:"BOT 1",
+            isBot:true,
+            cash:5000,
+            stocks:[],
+            openStocks:new Set(),
+            inactiveTurns:0
+        },
+
+        {
+            id:2,
+            name:"BOT 2",
+            isBot:true,
+            cash:5000,
+            stocks:[],
+            openStocks:new Set(),
+            inactiveTurns:0
+        },
+
+        {
+            id:3,
+            name:"BOT 3",
+            isBot:true,
+            cash:5000,
+            stocks:[],
+            openStocks:new Set(),
+            inactiveTurns:0
+        }
+
+    ];
+
+}
+
+
+/* =========================================================
+   STOCK DECK
+========================================================= */
 
 function createStockDeck(){
 
     stockDeck=[];
 
+    /*
+       10 עותקים מכל סוג.
+       אם נגמרת החפיסה, מניות שנמכרו לבנק
+       חוזרות לחפיסה.
+    */
+
     for(const type of stockTypes){
 
-        for(let i=0;i<STOCK_COPIES;i++){
+        for(let i=0;i<10;i++){
 
             stockDeck.push({
+                uid:crypto.randomUUID(),
+                typeId:type.id,
                 name:type.name,
-                value:type.value,
+                base:type.base,
                 changes:[...type.changes],
+                owner:null,
                 open:false
             });
+
         }
+
     }
 
     shuffle(stockDeck);
+
 }
 
-/* =========================
-   חפיסת כסף
-========================= */
+
+/* =========================================================
+   MONEY DECK
+========================================================= */
 
 function createMoneyDeck(){
 
     moneyDeck=[];
 
-    for(const value of MONEY_VALUES){
+    for(const value of moneyValues){
 
-        for(let i=0;i<MONEY_CARDS_PER_VALUE;i++){
+        for(let i=0;i<30;i++){
 
             moneyDeck.push(value);
+
         }
+
     }
 
     shuffle(moneyDeck);
+
 }
 
-/* =========================
-   משיכת מניה
-========================= */
+
+/* =========================================================
+   DRAW STOCK
+========================================================= */
 
 function drawStock(){
 
     if(stockDeck.length===0){
+
         recycleBankStocks();
+
     }
 
     if(stockDeck.length===0){
+
         return null;
+
     }
 
     return stockDeck.pop();
+
 }
 
-/* =========================
-   החזרת מניות מהבנק
-========================= */
+
+/* =========================================================
+   RECYCLE BANK STOCKS
+========================================================= */
 
 function recycleBankStocks(){
 
-    if(bankStocks.length===0)return;
+    if(bankStocks.length===0){
+        return;
+    }
 
-    stockDeck.push(...bankStocks);
+    for(const stock of bankStocks){
+
+        stock.owner=null;
+        stock.open=false;
+
+        stockDeck.push(stock);
+
+    }
+
     bankStocks=[];
 
     shuffle(stockDeck);
 
-    log("חפיסת המניות התמלאה מחדש.");
+    log("♻️ הבנק החזיר את המניות שנמכרו אליו לחפיסת המניות.","logInfo");
+
 }
 
-/* =========================
-   חלוקת 5 מניות
-========================= */
 
-function giveFiveStocks(company){
+/* =========================================================
+   GIVE FIVE STOCKS
+========================================================= */
+
+function giveFiveStocks(player){
 
     for(let i=0;i<5;i++){
 
         const stock=drawStock();
 
-        if(!stock)break;
+        if(!stock) break;
 
+        stock.owner=player.id;
         stock.open=false;
 
-        company.stocks.push(stock);
+        player.stocks.push(stock);
+
     }
 
-    ensureOneOpen(company);
 }
 
-/* =========================
-   התחלת משחק
-========================= */
+
+/* =========================================================
+   START GAME
+========================================================= */
 
 function startGame(rounds){
 
     totalRounds=rounds;
+
     currentRound=1;
-    turnNumber=1;
+
     currentPlayer=0;
 
-    roundEnding=false;
+    turnNumber=1;
+
     gameOver=false;
-    incomeRolled=false;
 
     document.getElementById("startScreen").classList.add("hidden");
+
     document.getElementById("gameScreen").classList.remove("hidden");
 
     createPlayers();
+
     createStockDeck();
+
     createMoneyDeck();
 
-    for(const company of companies){
+    for(const player of players){
 
-        giveFiveStocks(company);
+        player.stocks=[];
 
-        const stockTotal=company.stocks.reduce(
-            (sum,s)=>sum+s.value,
-            0
-        );
+        player.openStocks=new Set();
 
-        company.cash=5000-stockTotal;
+        player.cash=5000;
+
+        player.inactiveTurns=0;
+
+        giveFiveStocks(player);
+
     }
 
-    log("המשחק התחיל!");
-    log("כל חברה מתחילה בשווי כולל של 5,000.");
+    ensureOneOpenForAll();
+
+    document.getElementById("gameLog").innerHTML="";
+
+    log(`🚀 המשחק התחיל! ${totalRounds} סיבובים.`,"logInfo");
+
+    for(const player of players){
+
+        log(
+            `🏢 <strong>${player.name}</strong> התחיל עם
+            💰 ${formatMoney(player.cash)}
+            ו-${player.stocks.length} מניות.`,
+            "logInfo"
+        );
+
+    }
+
+    log("🎯 המטרה: לסיים עם הכי הרבה כסף.","logInfo");
 
     updateScreen();
+
     startTurn();
+
 }
 
-/* =========================
-   LOG
-========================= */
 
-function log(message){
+/* =========================================================
+   ENSURE OPEN STOCK
+========================================================= */
 
-    const box=document.getElementById("log");
+function ensureOneOpen(player){
 
-    const line=document.createElement("div");
+    if(player.stocks.length===0) return;
 
-    line.className="logLine";
-    line.textContent=message;
+    const openCount=player.stocks.filter(s=>s.open).length;
 
-    box.appendChild(line);
-    box.scrollTop=box.scrollHeight;
+    if(openCount===0){
+
+        const stock=player.stocks[0];
+
+        stock.open=true;
+
+        player.openStocks.add(stock.uid);
+
+    }
+
 }
 
-/* =========================
-   קובייה
-========================= */
 
-function rollDie(){
+function ensureOneOpenForAll(){
 
-    return Math.floor(Math.random()*6)+1;
+    for(const player of players){
+
+        ensureOneOpen(player);
+
+    }
+
 }
 
-/* =========================
-   תחילת תור
-========================= */
+
+/* =========================================================
+   TURN
+========================================================= */
 
 function startTurn(){
 
-    if(gameOver||roundEnding)return;
+    if(gameOver) return;
 
-    incomeRolled=false;
-    lastActionTaken=false;
-
-    const company=companies[currentPlayer];
+    const player=players[currentPlayer];
 
     updateScreen();
 
-    if(company.bot){
+    log(
+        `▶️ <strong>התור של ${player.name}</strong> התחיל.`,
+        "logInfo"
+    );
 
-        setTimeout(botTurn,900);
+    if(player.isBot){
+
+        setTimeout(()=>{
+
+            performIncomeRoll(player);
+
+            setTimeout(()=>botTurn(player),500);
+
+        },500);
 
     }else{
 
-        document.getElementById("status").textContent=
-            "התור שלך — גלגל להכנסה";
+        performIncomeRoll(player);
+
     }
+
 }
 
-/* =========================
-   הכנסה
-========================= */
 
-function rollIncome(){
+/* =========================================================
+   INCOME
+========================================================= */
 
-    if(incomeRolled)return;
-    if(!canHumanActBeforeIncome())return;
+function performIncomeRoll(player){
 
-    performIncomeRoll();
-}
+    if(moneyDeck.length===0){
 
-function canHumanActBeforeIncome(){
+        log(
+            `💰 חפיסת הכסף נגמרה. ${player.name} לא מקבל כסף בתור הזה.`,
+            "logBad"
+        );
 
-    if(gameOver||roundEnding)return false;
+        return;
 
-    return !companies[currentPlayer].bot;
-}
+    }
 
-function performIncomeRoll(){
+    const die=rollDie();
 
-    if(incomeRolled||gameOver||roundEnding)return;
+    const drawn=[];
 
-    incomeRolled=true;
+    let total=0;
 
-    const company=companies[currentPlayer];
-
-    const dice=rollDie();
-
-    let income=0;
-
-    for(let i=0;i<dice;i++){
+    for(let i=0;i<die;i++){
 
         if(moneyDeck.length===0){
 
-            log("חפיסת הכסף נגמרה עד סוף הסיבוב.");
-
             break;
+
         }
 
-        income+=moneyDeck.pop();
+        const card=moneyDeck.pop();
+
+        drawn.push(card);
+
+        total+=card;
+
     }
 
-    company.cash+=income;
+    player.cash+=total;
+
+    const cardsText=drawn.map(v=>formatMoney(v)).join(" + ");
 
     log(
-        company.name+
-        " גלגל "+dice+
-        " וקיבל "+income+" כסף."
+        `🎲 <strong>${player.name}</strong> גלגל/ה לקבלת הכנסה:
+        <strong>${die}</strong> קלפי כסף.`,
+        "logInfo"
+    );
+
+    log(
+        `🃏 קלפי הכסף: <strong>${cardsText || "אין"}</strong>`,
+        "logMoney"
+    );
+
+    log(
+        `💵 <strong>${player.name}</strong> קיבל/ה בסך הכול
+        <strong>${formatMoney(total)}</strong>.
+        💰 כסף עכשיו: <strong>${formatMoney(player.cash)}</strong>`,
+        "logMoney"
     );
 
     updateScreen();
 
-    if(company.bot){
-
-        setTimeout(botActions,700);
-    }
 }
 
-/* =========================
-   סימון פעולה
-========================= */
 
-function markAction(){
+/* =========================================================
+   DIE
+========================================================= */
 
-    lastActionTaken=true;
-    companies[currentPlayer].nothingTurns=0;
+function rollDie(){
+
+    return Math.floor(Math.random()*6)+1;
+
 }
 
-/* =========================
-   פתיחה / סגירה
-========================= */
 
-function toggleStock(stockIndex){
+/* =========================================================
+   ACTION TRACKING
+========================================================= */
 
-    if(!canHumanAct())return;
+function markAction(player){
 
-    const company=companies[currentPlayer];
-    const stock=company.stocks[stockIndex];
+    player.inactiveTurns=0;
 
-    if(!stock)return;
+}
+
+
+/* =========================================================
+   TOGGLE STOCK
+========================================================= */
+
+function toggleStock(stockUid){
+
+    const player=players[currentPlayer];
+
+    if(player.isBot) return;
+
+    const stock=player.stocks.find(s=>s.uid===stockUid);
+
+    if(!stock) return;
 
     if(stock.open){
 
-        const openCount=
-            company.stocks.filter(s=>s.open).length;
+        const openCount=player.stocks.filter(s=>s.open).length;
 
         if(openCount<=1){
 
-            alert("חייבת להיות לפחות מניה אחת פתוחה למכירה.");
+            log(
+                `⚠️ אי אפשר לסגור את ${stock.name}: זו המניה הפתוחה היחידה של ${player.name}.`,
+                "logBad"
+            );
 
             return;
+
         }
 
         stock.open=false;
 
+        player.openStocks.delete(stock.uid);
+
+        markAction(player);
+
         log(
-            company.name+
-            " סגר את "+stock.name+
-            " למכירה."
+            `🔒 ${player.name} סגר את ${stock.name} למסחר.`,
+            "logInfo"
         );
 
     }else{
 
         stock.open=true;
 
+        player.openStocks.add(stock.uid);
+
+        markAction(player);
+
         log(
-            company.name+
-            " פתח את "+stock.name+
-            " למכירה."
+            `🔓 ${player.name} פתח את ${stock.name} למסחר.`,
+            "logInfo"
         );
+
     }
 
-    markAction();
+    ensureOneOpen(player);
+
     updateScreen();
+
 }
 
-/* =========================
-   מכירה לבנק
-========================= */
 
-function sellToBank(stockIndex){
+/* =========================================================
+   SELL TO BANK
+========================================================= */
 
-    if(!canHumanAct())return;
+function sellToBank(stockUid){
 
-    const company=companies[currentPlayer];
-    const stock=company.stocks[stockIndex];
+    const player=players[currentPlayer];
 
-    if(!stock)return;
+    if(player.isBot) return;
 
-    company.cash+=stock.value;
+    const index=player.stocks.findIndex(s=>s.uid===stockUid);
 
-    company.stocks.splice(stockIndex,1);
+    if(index===-1) return;
+
+    const stock=player.stocks[index];
+
+    const value=stock.base;
+
+    player.cash+=value;
+
+    player.stocks.splice(index,1);
+
+    player.openStocks.delete(stock.uid);
+
+    stock.owner=null;
 
     stock.open=false;
 
     bankStocks.push(stock);
 
-    markAction();
+    markAction(player);
 
     log(
-        company.name+
-        " מכר "+stock.name+
-        " לבנק ב-"+stock.value+"."
+        `🏦 ${player.name} מכר לבנק את <strong>${stock.name}</strong>
+        במחיר הבסיס <strong>${formatMoney(value)}</strong>.
+        💰 כסף עכשיו: <strong>${formatMoney(player.cash)}</strong>`,
+        "logMoney"
     );
 
-    if(company.stocks.length===0){
+    ensureOneOpen(player);
 
-        checkRoundEnd();
-        return;
-    }
-
-    ensureOneOpen(company);
+    checkRoundEnd();
 
     updateScreen();
+
 }
 
-/* =========================
-   מכירת כל המניות לבנק
-========================= */
 
-function sellAllToBank(company){
+/* =========================================================
+   SELL ALL
+========================================================= */
+
+function sellAllToBank(player){
+
+    const stocks=[...player.stocks];
 
     let total=0;
 
-    while(company.stocks.length>0){
+    for(const stock of stocks){
 
-        const stock=company.stocks.pop();
+        total+=stock.base;
 
-        total+=stock.value;
-
+        stock.owner=null;
         stock.open=false;
 
         bankStocks.push(stock);
+
     }
 
-    company.cash+=total;
+    player.stocks=[];
+
+    player.openStocks.clear();
+
+    player.cash+=total;
 
     log(
-        company.name+
-        " מכר את כל המניות לבנק וקיבל "+total+"."
+        `🏦 ${player.name} מכר את כל ${stocks.length} המניות לבנק
+        וקיבל <strong>${formatMoney(total)}</strong>.
+        💰 כסף עכשיו: <strong>${formatMoney(player.cash)}</strong>`,
+        "logMoney"
     );
+
 }
 
-/* =========================
-   קנייה
-========================= */
 
-function buyStock(sellerIndex,stockIndex){
+/* =========================================================
+   BUY
+========================================================= */
 
-    if(!canHumanAct())return;
+function buyStock(sellerId,stockUid){
 
-    if(sellerIndex===currentPlayer)return;
+    const buyer=players[currentPlayer];
 
-    const buyer=companies[currentPlayer];
-    const seller=companies[sellerIndex];
+    if(buyer.isBot) return;
 
-    const stock=seller.stocks[stockIndex];
+    const seller=players[sellerId];
 
-    if(!stock||!stock.open)return;
+    const stock=seller.stocks.find(s=>s.uid===stockUid);
 
-    /*
-       המחיר הנמוך ביותר האפשרי.
-       אם אפילו אותו אי אפשר לשלם,
-       אין אפשרות להתחיל עסקה.
-    */
+    if(!stock || !stock.open) return;
 
-    const minimumPrice=
-        stock.value+
-        Math.min(...stock.changes);
+    const minChange=Math.min(...stock.changes);
 
-    if(buyer.cash<minimumPrice){
+    const minPrice=stock.base+minChange;
 
-        alert(
-            "אין לך מספיק כסף אפילו למחיר הנמוך ביותר האפשרי של המניה."
-        );
-
-        return;
-    }
-
-    /*
-       עכשיו ורק עכשיו הקובייה מתגלגלת.
-    */
-
-    const dice=rollDie();
-
-    const change=stock.changes[dice-1];
-
-    const price=stock.value+change;
-
-    log(
-        "🎲 מחיר "+stock.name+
-        " נקבע לפי קובייה: "+
-        price
-    );
-
-    /*
-       אם המחיר שיצא גבוה מדי —
-       העסקה מתבטלת.
-    */
-
-    if(buyer.cash<price){
+    if(buyer.cash<minPrice){
 
         log(
-            "❌ העסקה בוטלה! "+
-            buyer.name+
-            " לא יכול לשלם "+price+"."
+            `❌ ${buyer.name} לא יכול לקנות את ${stock.name}.
+            המחיר המינימלי האפשרי הוא ${formatMoney(minPrice)},
+            אבל יש לו רק ${formatMoney(buyer.cash)}.`,
+            "logBad"
         );
 
-        /*
-           חשוב:
-           לא משנים בעלות ולא כסף.
-           המניה נשארת אצל המוכר.
-        */
-
         return;
+
     }
 
-    /*
-       העסקה מתבצעת.
-    */
+    const die=rollDie();
+
+    const change=stock.changes[die-1];
+
+    const price=stock.base+change;
+
+    log(
+        `🎲 ${buyer.name} ניסה לקנות <strong>${stock.name}</strong>
+        מ-${seller.name}. הקובייה יצאה <strong>${die}</strong>.
+        ${formatChange(change)}
+        | בסיס: <strong>${formatMoney(stock.base)}</strong>
+        → מחיר עסקה: <strong>${formatMoney(price)}</strong>`,
+        "logInfo"
+    );
+
+    if(price>buyer.cash){
+
+        log(
+            `🚫 העסקה בוטלה!
+            המחיר שיצא בקובייה הוא ${formatMoney(price)},
+            אבל ל-${buyer.name} יש רק ${formatMoney(buyer.cash)}.
+            לא עבר כסף ולא השתנתה הבעלות.`,
+            "logBad"
+        );
+
+        return;
+
+    }
 
     buyer.cash-=price;
+
     seller.cash+=price;
 
-    seller.stocks.splice(stockIndex,1);
+    const index=seller.stocks.indexOf(stock);
 
-    stock.open=false;
+    if(index!==-1){
+
+        seller.stocks.splice(index,1);
+
+    }
+
+    seller.openStocks.delete(stock.uid);
+
+    stock.owner=buyer.id;
 
     buyer.stocks.push(stock);
 
-    markAction();
+    stock.open=true;
 
-    log(
-        "✅ "+
-        buyer.name+
-        " קנה "+stock.name+
-        " מ-"+seller.name+
-        " ב-"+price+"."
-    );
+    buyer.openStocks.add(stock.uid);
+
+    markAction(buyer);
 
     ensureOneOpen(seller);
 
+    log(
+        `💰 העסקה בוצעה!
+        ${buyer.name} שילם/ה <strong>${formatMoney(price)}</strong>
+        ל-${seller.name}.
+        💵 כסף של ${buyer.name}: <strong>${formatMoney(buyer.cash)}</strong>
+        | 💵 כסף של ${seller.name}: <strong>${formatMoney(seller.cash)}</strong>`,
+        "logGood"
+    );
+
+    log(
+        `📦 ${stock.name} עבר מ-${seller.name} ל-${buyer.name}
+        והוא פתוח למסחר אצל הבעלים החדש.`,
+        "logInfo"
+    );
+
+    updateScreen();
+
     checkRoundEnd();
 
-    if(!roundEnding){
-        updateScreen();
-    }
 }
 
-/* =========================
-   האם שחקן אנושי יכול לפעול
-========================= */
+
+/* =========================================================
+   HUMAN CAN ACT
+========================================================= */
 
 function canHumanAct(){
 
-    if(gameOver||roundEnding)return false;
+    const player=players[currentPlayer];
 
-    if(companies[currentPlayer].bot)return false;
+    return !player.isBot && !gameOver;
 
-    if(!incomeRolled){
-
-        alert("קודם צריך לגלגל להכנסה.");
-
-        return false;
-    }
-
-    return true;
 }
 
-/* =========================
-   סיום תור
-========================= */
+
+/* =========================================================
+   END TURN
+========================================================= */
 
 function endTurn(){
 
-    if(gameOver||roundEnding)return;
+    const player=players[currentPlayer];
 
-    const company=companies[currentPlayer];
+    if(player.isBot) return;
 
-    if(company.bot)return;
+    finishCurrentTurn(player);
 
-    if(!incomeRolled){
-
-        alert("צריך לגלגל להכנסה קודם.");
-
-        return;
-    }
-
-    finishCurrentTurn();
 }
 
-/* =========================
-   סיום תור נוכחי
-========================= */
 
-function finishCurrentTurn(){
+function finishCurrentTurn(player){
 
-    const company=companies[currentPlayer];
+    /*
+       אם לא נעשתה שום פעולה במהלך התור,
+       מגדילים את מונה חוסר הפעילות.
+    */
 
-    if(!lastActionTaken){
+    if(player.inactiveTurns===0){
 
-        company.nothingTurns++;
+        /*
+           אין דרך לדעת כאן אם בוצעה פעולה אחרי ההכנסה
+           בלי משתנה נוסף, לכן נשתמש במשתנה turnDidAction.
+        */
 
-        log(
-            company.name+
-            " לא ביצע פעולה. "+
-            "תורות ללא פעולה ברצף: "+
-            company.nothingTurns
-        );
+    }
+
+    if(typeof player.turnDidAction==="undefined"){
+        player.turnDidAction=false;
+    }
+
+    if(player.turnDidAction){
+
+        player.inactiveTurns=0;
 
     }else{
 
-        company.nothingTurns=0;
-    }
-
-    /*
-       שני תורות בלי לעשות כלום:
-       הבנק קונה מניה ב-100 פחות מהבסיס.
-    */
-
-    if(
-        company.nothingTurns>=2 &&
-        company.stocks.length>0
-    ){
-
-        bankForcedPurchase(company);
-
-        company.nothingTurns=0;
-
-        if(roundEnding)return;
-    }
-
-    nextTurn();
-}
-
-/* =========================
-   קנייה כפויה מהבנק
-========================= */
-
-function bankForcedPurchase(company){
-
-    if(company.stocks.length===0)return;
-
-    /*
-       כרגע הבנק לוקח את המניה הראשונה.
-    */
-
-    const stock=company.stocks[0];
-
-    const price=Math.max(0,stock.value-100);
-
-    company.cash+=price;
-
-    company.stocks.splice(0,1);
-
-    stock.open=false;
-
-    bankStocks.push(stock);
-
-    log(
-        "⚠️ קנס חוסר פעילות: הבנק קנה "+
-        stock.name+
-        " מ-"+company.name+
-        " ב-"+price+
-        " — 100 פחות מהמחיר הבסיסי."
-    );
-
-    if(company.stocks.length===0){
-
-        checkRoundEnd();
-        return;
-    }
-
-    ensureOneOpen(company);
-}
-
-/* =========================
-   תור הבא
-========================= */
-
-function nextTurn(){
-
-    if(roundEnding||gameOver)return;
-
-    currentPlayer++;
-
-    if(currentPlayer>=companies.length){
-
-        currentPlayer=0;
-        turnNumber++;
-    }
-
-    startTurn();
-}
-
-/* =========================
-   תור בוט
-========================= */
-
-function botTurn(){
-
-    if(roundEnding||gameOver)return;
-
-    if(!companies[currentPlayer].bot)return;
-
-    performIncomeRoll();
-}
-
-/* =========================
-   פעולות בוט
-========================= */
-
-function botActions(){
-
-    if(roundEnding||gameOver)return;
-
-    const bot=companies[currentPlayer];
-
-    if(!bot.bot)return;
-
-    let actionDone=false;
-
-    /*
-       קודם מנסה לפתוח מניה.
-    */
-
-    for(let i=0;i<bot.stocks.length;i++){
-
-        if(
-            !bot.stocks[i].open &&
-            Math.random()<0.35
-        ){
-
-            bot.stocks[i].open=true;
-
-            actionDone=true;
-
-            log(
-                bot.name+
-                " פתח "+bot.stocks[i].name+
-                " למכירה."
-            );
-
-            break;
-        }
-    }
-
-    /*
-       מנסה לקנות מניה פתוחה.
-    */
-
-    if(!actionDone){
-
-        const possible=[];
-
-        for(
-            let sellerIndex=0;
-            sellerIndex<companies.length;
-            sellerIndex++
-        ){
-
-            if(sellerIndex===currentPlayer)continue;
-
-            const seller=companies[sellerIndex];
-
-            for(
-                let stockIndex=0;
-                stockIndex<seller.stocks.length;
-                stockIndex++
-            ){
-
-                const stock=seller.stocks[stockIndex];
-
-                if(!stock.open)continue;
-
-                const minimumPrice=
-                    stock.value+
-                    Math.min(...stock.changes);
-
-                if(bot.cash>=minimumPrice){
-
-                    possible.push({
-                        sellerIndex,
-                        stockIndex
-                    });
-                }
-            }
-        }
-
-        if(possible.length>0){
-
-            const choice=
-                possible[
-                    Math.floor(
-                        Math.random()*possible.length
-                    )
-                ];
-
-            actionDone=botBuyStock(
-                choice.sellerIndex,
-                choice.stockIndex
-            );
-        }
-    }
-
-    /*
-       אם לא קנה — לפעמים מוכר לבנק.
-    */
-
-    if(
-        !actionDone &&
-        bot.stocks.length>1 &&
-        Math.random()<0.5
-    ){
-
-        actionDone=botSellToBank(0);
-    }
-
-    /*
-       לפעמים סוגר מניה,
-       אבל לא את המניה הפתוחה היחידה.
-    */
-
-    if(!actionDone){
-
-        const openStocks=
-            bot.stocks.filter(s=>s.open);
-
-        if(
-            openStocks.length>1 &&
-            Math.random()<0.3
-        ){
-
-            openStocks[0].open=false;
-
-            ensureOneOpen(bot);
-
-            log(
-                bot.name+
-                " סגר "+openStocks[0].name+
-                " למכירה."
-            );
-
-            actionDone=true;
-        }
-    }
-
-    lastActionTaken=actionDone;
-
-    setTimeout(
-        finishCurrentTurn,
-        700
-    );
-}
-
-/* =========================
-   קניית בוט
-========================= */
-
-function botBuyStock(sellerIndex,stockIndex){
-
-    const buyer=companies[currentPlayer];
-    const seller=companies[sellerIndex];
-
-    const stock=seller.stocks[stockIndex];
-
-    if(!stock||!stock.open)return false;
-
-    const minimumPrice=
-        stock.value+
-        Math.min(...stock.changes);
-
-    if(buyer.cash<minimumPrice)return false;
-
-    const dice=rollDie();
-
-    const change=stock.changes[dice-1];
-
-    const price=stock.value+change;
-
-    log(
-        "🎲 "+buyer.name+
-        " גלגל "+dice+
-        " עבור "+stock.name+
-        " וקיבל מחיר "+price+"."
-    );
-
-    /*
-       גם לבוט:
-       אם אין מספיק כסף אחרי הקובייה —
-       העסקה מתבטלת.
-    */
-
-    if(buyer.cash<price){
+        player.inactiveTurns++;
 
         log(
-            "❌ העסקה של "+buyer.name+
-            " בוטלה כי אין לו מספיק כסף."
+            `⏸️ ${player.name} לא ביצע פעולה בתור הזה.
+            רצף חוסר פעילות: <strong>${player.inactiveTurns}</strong>.`,
+            "logInfo"
         );
 
-        return false;
     }
 
-    buyer.cash-=price;
-    seller.cash+=price;
+    player.turnDidAction=false;
 
-    seller.stocks.splice(stockIndex,1);
+    if(player.inactiveTurns>=2){
 
-    stock.open=false;
+        bankForcedPurchase(player);
 
-    buyer.stocks.push(stock);
+        player.inactiveTurns=0;
 
-    log(
-        "✅ "+buyer.name+
-        " קנה "+stock.name+
-        " ב-"+price+
-        " מ-"+seller.name+"."
-    );
-
-    ensureOneOpen(seller);
+    }
 
     checkRoundEnd();
 
-    return true;
+    if(gameOver) return;
+
+    nextTurn();
+
 }
 
-/* =========================
-   מכירת בוט לבנק
-========================= */
 
-function botSellToBank(stockIndex){
+/* =========================================================
+   FORCED BANK PURCHASE
+========================================================= */
 
-    const bot=companies[currentPlayer];
+function bankForcedPurchase(player){
 
-    const stock=bot.stocks[stockIndex];
+    if(player.stocks.length===0) return;
 
-    if(!stock)return false;
+    const stock=player.stocks[0];
 
-    bot.cash+=stock.value;
+    const value=Math.max(0,stock.base-100);
 
-    bot.stocks.splice(stockIndex,1);
+    player.cash+=value;
+
+    player.stocks.shift();
+
+    player.openStocks.delete(stock.uid);
+
+    stock.owner=null;
 
     stock.open=false;
 
     bankStocks.push(stock);
 
     log(
-        bot.name+
-        " מכר "+stock.name+
-        " לבנק ב-"+stock.value+"."
+        `⚠️ הבנק קנה אוטומטית מ-${player.name} את
+        <strong>${stock.name}</strong>
+        בגלל 2 תורות ללא פעולה.
+        מחיר כפוי: <strong>${formatMoney(value)}</strong>.
+        💰 כסף עכשיו: <strong>${formatMoney(player.cash)}</strong>`,
+        "logBad"
     );
 
-    if(bot.stocks.length===0){
+    ensureOneOpen(player);
 
-        checkRoundEnd();
+}
 
-        return true;
+
+/* =========================================================
+   NEXT TURN
+========================================================= */
+
+function nextTurn(){
+
+    currentPlayer++;
+
+    turnNumber++;
+
+    if(currentPlayer>=players.length){
+
+        currentPlayer=0;
+
+    }
+
+    updateScreen();
+
+    setTimeout(startTurn,500);
+
+}
+
+
+/* =========================================================
+   BOT TURN
+========================================================= */
+
+function botTurn(bot){
+
+    if(gameOver) return;
+
+    log(
+        `🤖 <strong>${bot.name}</strong> מתחיל לבצע פעולות...`,
+        "logInfo"
+    );
+
+    setTimeout(()=>{
+
+        botActions(bot);
+
+    },500);
+
+}
+
+
+/* =========================================================
+   BOT ACTIONS
+========================================================= */
+
+function botActions(bot){
+
+    if(gameOver) return;
+
+    /*
+       הבוט בוחר כמה פעולות באופן אקראי.
+       הוא יכול לקנות, למכור לבנק, לפתוח או לסגור מניה.
+    */
+
+    let actionCount=0;
+
+    const maxActions=2+Math.floor(Math.random()*3);
+
+    function doNext(){
+
+        if(actionCount>=maxActions){
+
+            finishCurrentTurn(bot);
+
+            return;
+
+        }
+
+        actionCount++;
+
+        const roll=Math.random();
+
+        if(roll<0.45){
+
+            botBuyStock(bot);
+
+        }else if(roll<0.70){
+
+            botSellToBank(bot);
+
+        }else{
+
+            botToggleStock(bot);
+
+        }
+
+        setTimeout(doNext,650);
+
+    }
+
+    doNext();
+
+}
+
+
+/* =========================================================
+   BOT BUY
+========================================================= */
+
+function botBuyStock(bot){
+
+    const possible=[];
+
+    for(const seller of players){
+
+        if(seller.id===bot.id) continue;
+
+        for(const stock of seller.stocks){
+
+            if(!stock.open) continue;
+
+            const minPrice=stock.base+Math.min(...stock.changes);
+
+            if(bot.cash>=minPrice){
+
+                possible.push({
+                    seller,
+                    stock
+                });
+
+            }
+
+        }
+
+    }
+
+    if(possible.length===0){
+
+        log(
+            `🤖 ${bot.name} לא מצא מניה שהוא יכול להרשות לעצמו לקנות.`,
+            "logInfo"
+        );
+
+        return;
+
+    }
+
+    const choice=possible[Math.floor(Math.random()*possible.length)];
+
+    const seller=choice.seller;
+
+    const stock=choice.stock;
+
+    const die=rollDie();
+
+    const change=stock.changes[die-1];
+
+    const price=stock.base+change;
+
+    log(
+        `🎲 ${bot.name} מנסה לקנות <strong>${stock.name}</strong>
+        מ-${seller.name}.
+        🎲 יצא <strong>${die}</strong>.
+        ${formatChange(change)}
+        | בסיס: <strong>${formatMoney(stock.base)}</strong>
+        → מחיר עסקה: <strong>${formatMoney(price)}</strong>`,
+        "logInfo"
+    );
+
+    if(price>bot.cash){
+
+        log(
+            `🚫 העסקה של ${bot.name} בוטלה:
+            המחיר ${formatMoney(price)}
+            גבוה מהכסף שלו ${formatMoney(bot.cash)}.
+            שום דבר לא השתנה.`,
+            "logBad"
+        );
+
+        return;
+
+    }
+
+    bot.cash-=price;
+
+    seller.cash+=price;
+
+    const index=seller.stocks.indexOf(stock);
+
+    if(index!==-1){
+
+        seller.stocks.splice(index,1);
+
+    }
+
+    seller.openStocks.delete(stock.uid);
+
+    stock.owner=bot.id;
+
+    stock.open=true;
+
+    bot.stocks.push(stock);
+
+    bot.openStocks.add(stock.uid);
+
+    bot.turnDidAction=true;
+
+    ensureOneOpen(seller);
+
+    log(
+        `💰 ${bot.name} קנה את ${stock.name}
+        מ-${seller.name} תמורת <strong>${formatMoney(price)}</strong>.
+        💵 ${bot.name} נשאר עם <strong>${formatMoney(bot.cash)}</strong>.
+        💵 ${seller.name} עכשיו עם <strong>${formatMoney(seller.cash)}</strong>.`,
+        "logGood"
+    );
+
+    updateScreen();
+
+}
+
+
+/* =========================================================
+   BOT SELL
+========================================================= */
+
+function botSellToBank(bot){
+
+    if(bot.stocks.length<=1){
+
+        log(
+            `🤖 ${bot.name} לא מוכר מניה לבנק כי תישאר לו מניה אחת בלבד.`,
+            "logInfo"
+        );
+
+        return;
+
+    }
+
+    const stock=bot.stocks[
+        Math.floor(Math.random()*bot.stocks.length)
+    ];
+
+    const value=stock.base;
+
+    bot.cash+=value;
+
+    const index=bot.stocks.indexOf(stock);
+
+    if(index!==-1){
+
+        bot.stocks.splice(index,1);
+
+    }
+
+    bot.openStocks.delete(stock.uid);
+
+    stock.owner=null;
+
+    stock.open=false;
+
+    bankStocks.push(stock);
+
+    bot.turnDidAction=true;
+
+    ensureOneOpen(bot);
+
+    log(
+        `🏦 ${bot.name} מכר את ${stock.name} לבנק
+        במחיר הבסיס <strong>${formatMoney(value)}</strong>.
+        💰 כסף עכשיו: <strong>${formatMoney(bot.cash)}</strong>.`,
+        "logMoney"
+    );
+
+    updateScreen();
+
+}
+
+
+/* =========================================================
+   BOT OPEN/CLOSE
+========================================================= */
+
+function botToggleStock(bot){
+
+    if(bot.stocks.length===0) return;
+
+    const openStocks=bot.stocks.filter(s=>s.open);
+
+    if(openStocks.length===0){
+
+        const stock=bot.stocks[
+            Math.floor(Math.random()*bot.stocks.length)
+        ];
+
+        stock.open=true;
+
+        bot.openStocks.add(stock.uid);
+
+        bot.turnDidAction=true;
+
+        log(
+            `🔓 ${bot.name} פתח את ${stock.name} למסחר.`,
+            "logInfo"
+        );
+
+        updateScreen();
+
+        return;
+
+    }
+
+    if(Math.random()<0.5){
+
+        const closed=bot.stocks.filter(s=>!s.open);
+
+        if(closed.length>0){
+
+            const stock=closed[
+                Math.floor(Math.random()*closed.length)
+            ];
+
+            stock.open=true;
+
+            bot.openStocks.add(stock.uid);
+
+            bot.turnDidAction=true;
+
+            log(
+                `🔓 ${bot.name} פתח את ${stock.name} למסחר.`,
+                "logInfo"
+            );
+
+        }
+
+    }else{
+
+        if(openStocks.length<=1){
+
+            log(
+                `🔒 ${bot.name} רצה לסגור מניה,
+                אבל ${openStocks[0]?.name || "המניה היחידה"}
+                היא המניה הפתוחה היחידה שלו.`,
+                "logInfo"
+            );
+
+        }else{
+
+            const stock=openStocks[
+                Math.floor(Math.random()*openStocks.length)
+            ];
+
+            stock.open=false;
+
+            bot.openStocks.delete(stock.uid);
+
+            bot.turnDidAction=true;
+
+            log(
+                `🔒 ${bot.name} סגר את ${stock.name} למסחר.`,
+                "logInfo"
+            );
+
+        }
+
     }
 
     ensureOneOpen(bot);
 
-    return true;
+    updateScreen();
+
 }
 
-/* =========================
-   בדיקת סוף סיבוב
-========================= */
+
+/* =========================================================
+   ROUND END
+========================================================= */
 
 function checkRoundEnd(){
 
-    if(roundEnding||gameOver)return;
+    if(gameOver) return;
 
-    const winnerOfRound=
-        companies.find(
-            company=>company.stocks.length===0
-        );
+    const loser=players.find(p=>p.stocks.length===0);
 
-    if(!winnerOfRound)return;
-
-    roundEnding=true;
+    if(!loser) return;
 
     log(
-        "================================"
+        `🏁 הסיבוב הסתיים!
+        ${loser.name} הגיע ל-0 מניות.`,
+        "logInfo"
     );
 
-    log(
-        "סיבוב "+currentRound+
-        " נגמר! "+
-        winnerOfRound.name+
-        " נשאר בלי מניות."
-    );
+    showRoundEnd();
 
-    setTimeout(showRoundEnd,500);
 }
 
-/* =========================
-   חלון סוף סיבוב
-========================= */
+
+/* =========================================================
+   ROUND END MODAL
+========================================================= */
 
 function showRoundEnd(){
 
-    document.getElementById("roundReason").textContent=
-        "כל חברה יכולה עכשיו למכור את כל המניות שלה לבנק או לשמור אותן.";
+    const human=players[0];
 
-    const buttons=
-        document.getElementById("roundChoiceButtons");
+    if(currentRound>=totalRounds){
 
-    buttons.innerHTML="";
+        setTimeout(()=>finishGame(),500);
 
-    const player=companies[0];
+        return;
 
-    if(player.stocks.length===0){
+    }
 
-        const text=document.createElement("p");
+    let html=`
 
-        text.textContent=
-            "אין לך מניות שנשארו למכור.";
+        <h2>🏁 סוף סיבוב ${currentRound}</h2>
 
-        buttons.appendChild(text);
+        <p>
+            חברה אחת הגיעה ל-0 מניות ולכן הסיבוב הסתיים.
+        </p>
 
-        const continueButton=document.createElement("button");
+        <h3>מה אתה רוצה לעשות עם המניות שלך?</h3>
 
-        continueButton.className="big";
+        <p>
+            כרגע יש לך ${human.stocks.length} מניות
+            ו-${formatMoney(human.cash)}.
+        </p>
 
-        continueButton.textContent="המשך";
+        <div class="modalButtons">
 
-        continueButton.onclick=
-            finishRoundForHuman;
+            <button onclick="finishRoundForHuman(true)">
+                🏦 למכור את כל המניות
+            </button>
 
-        buttons.appendChild(continueButton);
+            <button onclick="finishRoundForHuman(false)">
+                📦 לשמור את המניות
+            </button>
+
+        </div>
+    `;
+
+    openModal(html);
+
+}
+
+
+/* =========================================================
+   FINISH ROUND
+========================================================= */
+
+function finishRoundForHuman(sell){
+
+    closeModal();
+
+    const human=players[0];
+
+    if(sell){
+
+        sellAllToBank(human);
 
     }else{
 
-        const sell=document.createElement("button");
+        log(
+            `📦 ${human.name} שמר את כל המניות שלו לסיבוב הבא.`,
+            "logInfo"
+        );
 
-        sell.className="sell big";
-
-        sell.textContent=
-            "מכור את כל המניות לבנק";
-
-        sell.onclick=()=>{
-
-            sellAllToBank(player);
-
-            finishRoundForHuman();
-        };
-
-        const keep=document.createElement("button");
-
-        keep.className="keep big";
-
-        keep.textContent=
-            "שמור את המניות";
-
-        keep.onclick=
-            finishRoundForHuman;
-
-        buttons.appendChild(sell);
-        buttons.appendChild(keep);
     }
 
-    document
-        .getElementById("roundModal")
-        .classList.remove("hidden");
-}
-
-/* =========================
-   סיום סיבוב
-========================= */
-
-function finishRoundForHuman(){
-
-    document
-        .getElementById("roundModal")
-        .classList.add("hidden");
-
     /*
-       הבוטים מחליטים אוטומטית.
+       הבוטים מחליטים לבד.
     */
 
-    for(let i=1;i<companies.length;i++){
+    for(const bot of players){
 
-        const bot=companies[i];
+        if(!bot.isBot) continue;
 
-        if(bot.stocks.length===0)continue;
+        const shouldSell=Math.random()<0.5;
 
-        const stockValue=
-            bot.stocks.reduce(
-                (sum,s)=>sum+s.value,
-                0
-            );
-
-        if(
-            stockValue>=2000 ||
-            Math.random()<0.5
-        ){
+        if(shouldSell){
 
             sellAllToBank(bot);
 
         }else{
 
             log(
-                bot.name+
-                " שמר את המניות שלו."
+                `📦 ${bot.name} שמר את ${bot.stocks.length} המניות שלו.`,
+                "logInfo"
             );
+
         }
+
     }
-
-    /*
-       שמירת תוצאת הסיבוב.
-    */
-
-    for(const company of companies){
-
-        company.scoreHistory.push(company.cash);
-    }
-
-    /*
-       המשחק נגמר?
-    */
-
-    if(currentRound>=totalRounds){
-
-        finishGame();
-
-        return;
-    }
-
-    /*
-       סיבוב חדש.
-    */
 
     currentRound++;
-    turnNumber=1;
-    currentPlayer=0;
 
-    incomeRolled=false;
-    roundEnding=false;
-    lastActionTaken=false;
+    moneyDeck=[];
 
     createMoneyDeck();
 
-    for(const company of companies){
+    for(const player of players){
 
-        giveFiveStocks(company);
+        player.turnDidAction=false;
+
+        player.inactiveTurns=0;
+
+        giveFiveStocks(player);
+
+        ensureOneOpen(player);
+
     }
 
-    log("================================");
-    log("סיבוב "+currentRound+" התחיל!");
-    log("כל חברה קיבלה 5 מניות חדשות.");
-    log("חפיסת הכסף עורבבה מחדש.");
+    log(
+        `🔄 מתחיל סיבוב ${currentRound} מתוך ${totalRounds}.`,
+        "logInfo"
+    );
+
+    currentPlayer=0;
+
+    turnNumber++;
 
     updateScreen();
 
-    startTurn();
+    setTimeout(startTurn,700);
+
 }
 
-/* =========================
-   סוף משחק
-========================= */
+
+/* =========================================================
+   FINISH GAME
+========================================================= */
 
 function finishGame(){
 
     gameOver=true;
-    roundEnding=false;
 
-    const sorted=
-        [...companies].sort(
-            (a,b)=>b.cash-a.cash
-        );
+    const sorted=[...players].sort((a,b)=>b.cash-a.cash);
 
-    let html="<h3>תוצאות סופיות</h3>";
+    let html=`
 
-    sorted.forEach((company,index)=>{
+        <h2>🏆 המשחק הסתיים!</h2>
 
-        html+=
-            "<p><strong>"+
-            (index+1)+
-            ". "+
-            company.name+
-            "</strong> — "+
-            company.cash+
-            "</p>";
+        <p>
+            אחרי ${totalRounds} סיבובים, זה המצב:
+        </p>
+
+        <table class="resultsTable">
+
+            <tr>
+                <th>מקום</th>
+                <th>חברה</th>
+                <th>כסף</th>
+                <th>מניות</th>
+            </tr>
+    `;
+
+    sorted.forEach((player,index)=>{
+
+        html+=`
+
+            <tr>
+
+                <td>
+                    ${index===0 ? "🥇" :
+                      index===1 ? "🥈" :
+                      index===2 ? "🥉" :
+                      index+1}
+                </td>
+
+                <td>${player.name}</td>
+
+                <td>
+                    <strong>${formatMoney(player.cash)}</strong>
+                </td>
+
+                <td>${player.stocks.length}</td>
+
+            </tr>
+
+        `;
+
     });
 
-    const winner=sorted[0];
+    html+=`
 
-    html+=
-        "<hr><h2>🏆 "+
-        winner.name+
-        " ניצחה!</h2>";
+        </table>
 
-    html+=
-        "<p>שווי סופי: "+
-        winner.cash+
-        "</p>";
+        <div class="modalButtons">
 
-    document.getElementById("finalResults").innerHTML=html;
+            <button onclick="location.reload()">
+                🔄 משחק חדש
+            </button>
 
-    document
-        .getElementById("gameOverModal")
-        .classList.remove("hidden");
+        </div>
+    `;
+
+    openModal(html);
 
     log(
-        "המשחק נגמר! "+
-        winner.name+
-        " היא החברה העשירה ביותר."
+        `🏆 המשחק הסתיים! המנצח הוא <strong>${sorted[0].name}</strong>
+        עם <strong>${formatMoney(sorted[0].cash)}</strong>.`,
+        "logGood"
     );
 
-    updateScreen();
 }
 
-/* =========================
-   לפחות מניה אחת פתוחה
-========================= */
 
-function ensureOneOpen(company){
+/* =========================================================
+   MODAL
+========================================================= */
 
-    if(company.stocks.length===0)return;
+function openModal(html){
 
-    if(!company.stocks.some(s=>s.open)){
+    document.getElementById("modal").innerHTML=html;
 
-        company.stocks[0].open=true;
-    }
+    document.getElementById("modalOverlay")
+        .classList.remove("hidden");
+
 }
 
-/* =========================
-   מסך פעולות
-========================= */
+
+function closeModal(){
+
+    document.getElementById("modalOverlay")
+        .classList.add("hidden");
+
+}
+
+
+/* =========================================================
+   RENDER ACTIONS
+========================================================= */
 
 function renderActions(){
 
-    const company=companies[currentPlayer];
-
-    const status=document.getElementById("status");
-    const buttons=document.getElementById("actionButtons");
-
-    buttons.innerHTML="";
-
-    if(gameOver){
-
-        status.textContent="המשחק נגמר";
-        return;
-    }
-
-    if(roundEnding){
-
-        status.textContent="הסיבוב מסתיים...";
-        return;
-    }
-
-    /*
-       חשוב:
-       בזמן תור בוט אין שום כפתורים
-       שהשחקן האנושי יכול להשתמש בהם.
-    */
-
-    if(company.bot){
-
-        status.textContent=
-            "🤖 "+company.name+
-            " משחק...";
-
-        return;
-    }
-
-    if(!incomeRolled){
-
-        status.textContent=
-            "התור שלך — גלגל להכנסה";
-
-        const roll=document.createElement("button");
-
-        roll.className="big";
-
-        roll.textContent="🎲 גלגל להכנסה";
-
-        roll.onclick=rollIncome;
-
-        buttons.appendChild(roll);
-
-        return;
-    }
-
-    status.textContent="התור שלך";
-
-    const end=document.createElement("button");
-
-    end.className="big";
-
-    end.textContent="סיים תור";
-
-    end.onclick=endTurn;
-
-    buttons.appendChild(end);
-}
-
-/* =========================
-   מסך החברות והמניות
-========================= */
-
-function renderCompanies(){
-
-    const container=
-        document.getElementById("companies");
+    const container=document.getElementById("actions");
 
     container.innerHTML="";
 
-    companies.forEach((company,companyIndex)=>{
+    const player=players[currentPlayer];
 
-        const box=document.createElement("div");
+    if(!player){
 
-        box.className="company";
+        return;
 
-        if(companyIndex===currentPlayer){
-            box.classList.add("active");
+    }
+
+    if(player.isBot){
+
+        document.getElementById("turnStatus").innerHTML=
+            `🤖 <strong>${player.name}</strong> משחק עכשיו...`;
+
+        return;
+
+    }
+
+    document.getElementById("turnStatus").innerHTML=
+        `🎮 זה התור שלך. בחר פעולה או סיים את התור.`;
+
+    /*
+       Sell buttons
+    */
+
+    for(const stock of player.stocks){
+
+        const sell=document.createElement("button");
+
+        sell.textContent=
+            `🏦 מכור ${stock.name} (${formatMoney(stock.base)})`;
+
+        sell.onclick=()=>sellToBank(stock.uid);
+
+        container.appendChild(sell);
+
+    }
+
+    /*
+       Open / close
+    */
+
+    for(const stock of player.stocks){
+
+        const button=document.createElement("button");
+
+        button.textContent=
+            stock.open
+            ? `🔒 סגור ${stock.name}`
+            : `🔓 פתח ${stock.name}`;
+
+        button.onclick=()=>toggleStock(stock.uid);
+
+        container.appendChild(button);
+
+    }
+
+    /*
+       Buy buttons
+    */
+
+    for(const seller of players){
+
+        if(seller.id===player.id) continue;
+
+        for(const stock of seller.stocks){
+
+            if(!stock.open) continue;
+
+            const minPrice=
+                stock.base+Math.min(...stock.changes);
+
+            const button=document.createElement("button");
+
+            button.textContent=
+                `🛒 קנה ${stock.name} מ-${seller.name}
+                (מינ' ${formatMoney(minPrice)})`;
+
+            button.disabled=player.cash<minPrice;
+
+            button.onclick=()=>buyStock(seller.id,stock.uid);
+
+            container.appendChild(button);
+
         }
 
-        const title=document.createElement("h2");
+    }
 
-        title.textContent=
-            company.name+
-            (company.bot?" 🤖":" 👤");
+    /*
+       End turn
+    */
 
-        box.appendChild(title);
+    const end=document.createElement("button");
 
-        const stats=document.createElement("div");
+    end.textContent="➡️ סיים תור";
 
-        stats.className="companyStats";
+    end.onclick=endTurn;
 
-        const cash=document.createElement("div");
+    container.appendChild(end);
 
-        cash.className="stat cash";
-
-        cash.textContent=
-            "כסף: "+company.cash;
-
-        stats.appendChild(cash);
-
-        const count=document.createElement("div");
-
-        count.className="stat";
-
-        count.textContent=
-            "מניות: "+company.stocks.length;
-
-        stats.appendChild(count);
-
-        const inactive=document.createElement("div");
-
-        inactive.className="stat";
-
-        inactive.textContent=
-            "תורות ללא פעולה: "+
-            company.nothingTurns;
-
-        stats.appendChild(inactive);
-
-        box.appendChild(stats);
-
-        const grid=document.createElement("div");
-
-        grid.className="stockGrid";
-
-        company.stocks.forEach(
-            (stock,stockIndex)=>{
-
-                const card=document.createElement("div");
-
-                card.className="stock";
-
-                card.classList.add(
-                    stock.open?
-                    "openStock":
-                    "closedStock"
-                );
-
-                const name=document.createElement("div");
-
-                name.className="stockName";
-
-                name.textContent=stock.name;
-
-                card.appendChild(name);
-
-                const value=document.createElement("div");
-
-                value.className="stockValue";
-
-                value.textContent=
-                    "מחיר בסיס: "+stock.value;
-
-                card.appendChild(value);
-
-                const status=document.createElement("div");
-
-                status.className="stockStatus";
-
-                status.classList.add(
-                    stock.open?
-                    "openText":
-                    "closedText"
-                );
-
-                status.textContent=
-                    stock.open?
-                    "🟢 פתוחה למכירה":
-                    "⚪ סגורה";
-
-                card.appendChild(status);
-
-                /*
-                   המניות שלך
-                */
-
-                if(
-                    companyIndex===currentPlayer &&
-                    !company.bot &&
-                    !roundEnding
-                ){
-
-                    const toggle=document.createElement("button");
-
-                    toggle.className=
-                        stock.open?
-                        "close":
-                        "open";
-
-                    toggle.textContent=
-                        stock.open?
-                        "סגור":
-                        "פתח למכירה";
-
-                    toggle.onclick=()=>{
-                        toggleStock(stockIndex);
-                    };
-
-                    card.appendChild(toggle);
-
-                    const sell=document.createElement("button");
-
-                    sell.className="bank";
-
-                    sell.textContent=
-                        "מכור לבנק";
-
-                    sell.onclick=()=>{
-                        sellToBank(stockIndex);
-                    };
-
-                    card.appendChild(sell);
-                }
-
-                /*
-                   מניות של אחרים שפתוחות למכירה
-                */
-
-                if(
-                    companyIndex!==currentPlayer &&
-                    stock.open &&
-                    !roundEnding &&
-                    !companies[currentPlayer].bot &&
-                    incomeRolled
-                ){
-
-                    /*
-                       רק המחיר המינימלי קובע אם
-                       בכלל אפשר להתחיל עסקה.
-                    */
-
-                    const minimumPrice=
-                        stock.value+
-                        Math.min(...stock.changes);
-
-                    const buy=document.createElement("button");
-
-                    buy.className="buy";
-
-                    buy.textContent="קנה";
-
-                    /*
-                       אם אין מספיק אפילו למחיר
-                       המינימלי — אי אפשר להתחיל.
-                    */
-
-                    buy.disabled=
-                        companies[currentPlayer].cash<
-                        minimumPrice;
-
-                    buy.title=
-                        "המחיר ייקבע בקובייה";
-
-                    buy.onclick=()=>{
-                        buyStock(
-                            companyIndex,
-                            stockIndex
-                        );
-                    };
-
-                    card.appendChild(buy);
-                }
-
-                grid.appendChild(card);
-            }
-        );
-
-        box.appendChild(grid);
-
-        container.appendChild(box);
-    });
 }
 
-/* =========================
-   עדכון כל המסך
-========================= */
+
+/* =========================================================
+   RENDER COMPANIES
+========================================================= */
+
+function renderCompanies(){
+
+    const board=document.getElementById("board");
+
+    board.innerHTML="";
+
+    for(const player of players){
+
+        const div=document.createElement("div");
+
+        div.className=
+            "company"
+            +(player.id===currentPlayer ? " current":"")
+            +(player.isBot ? " bot":"");
+
+        let stocksHtml="";
+
+        if(player.stocks.length===0){
+
+            stocksHtml=
+                `<div style="color:#999">אין מניות</div>`;
+
+        }else{
+
+            for(const stock of player.stocks){
+
+                stocksHtml+=`
+
+                    <div class="stock ${stock.open?"open":""}">
+
+                        <div class="stockInfo">
+
+                            <div class="stockName">
+                                ${stock.name}
+                            </div>
+
+                            <div class="stockBase">
+                                בסיס: ${formatMoney(stock.base)}
+                            </div>
+
+                            <div class="${stock.open?"openBadge":""}">
+                                ${stock.open
+                                    ? "🟠 פתוחה למסחר"
+                                    : "⚫ סגורה למסחר"}
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+
+        }
+
+        div.innerHTML=`
+
+            <div class="companyHeader">
+
+                <h2>
+                    ${player.isBot ? "🤖 ":"🏢 "}
+                    ${player.name}
+                </h2>
+
+                <div class="cash">
+                    💰 ${formatMoney(player.cash)}
+                </div>
+
+            </div>
+
+            <div style="margin-top:5px;color:#666">
+                ${player.stocks.length} מניות
+            </div>
+
+            <div class="stockArea">
+                ${stocksHtml}
+            </div>
+
+        `;
+
+        board.appendChild(div);
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE SCREEN
+========================================================= */
 
 function updateScreen(){
 
-    if(companies.length===0)return;
+    if(!players.length) return;
 
-    document.getElementById("roundDisplay").textContent=
-        currentRound;
+    document.getElementById("roundInfo").textContent=
+        `סיבוב ${currentRound}/${totalRounds}`;
 
-    document.getElementById("turnDisplay").textContent=
-        turnNumber;
+    document.getElementById("turnInfo").textContent=
+        `תור ${turnNumber}`;
 
-    document.getElementById("currentPlayerDisplay").textContent=
-        companies[currentPlayer].name;
+    document.getElementById("currentInfo").textContent=
+        `עכשיו: ${players[currentPlayer].name}`;
 
-    document.getElementById("totalRoundsDisplay").textContent=
-        totalRounds;
+    renderCompanies();
 
     renderActions();
-    renderCompanies();
+
 }
+
+
+/* =========================================================
+   ACTION MARKER PATCH
+========================================================= */
+
+/*
+   כל פעולה אמיתית של שחקן מסומנת כאן.
+*/
+
+const originalMarkAction=markAction;
+
+markAction=function(player){
+
+    player.turnDidAction=true;
+
+    player.inactiveTurns=0;
+
+};
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
 
 </script>
 
 </body>
-</html></html>
+</html>
