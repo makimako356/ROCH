@@ -69,6 +69,12 @@
             transform: scale(1.03);
         }
 
+        button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
 
         /* GAME */
 
@@ -124,6 +130,7 @@
             font-size: 20px;
             color: #196f3d;
             margin: 10px;
+            min-height: 25px;
         }
 
 
@@ -164,6 +171,11 @@
             padding: 8px 12px;
             border-radius: 8px;
             font-weight: bold;
+        }
+
+        .active-company {
+            border: 4px solid #2874a6;
+            box-shadow: 0 0 15px rgba(40,116,166,0.35);
         }
 
 
@@ -282,10 +294,10 @@
             </div>
 
             <div id="moneyResult">
-                Roll the dice to receive money.
+                Waiting for the turn...
             </div>
 
-            <button onclick="rollIncome()">
+            <button id="rollButton" onclick="rollIncome()">
                 🎲 ROLL FOR INCOME
             </button>
 
@@ -303,6 +315,11 @@
 
         let totalRounds = 3;
         let currentRound = 1;
+
+        // 0 = player, 1-3 = bots
+        let currentPlayer = 0;
+
+        let turnNumber = 0;
 
 
         /* STOCKS */
@@ -414,7 +431,7 @@
         }
 
 
-        /* DRAW ONE MONEY CARD */
+        /* DRAW MONEY CARD */
 
         function drawMoneyCard() {
 
@@ -439,6 +456,10 @@
                 );
 
             currentRound = 1;
+
+            currentPlayer = 0;
+
+            turnNumber = 0;
 
 
             companies.forEach(company => {
@@ -474,10 +495,25 @@
             ).style.display = "block";
 
 
+            updateTurnDisplay();
+
+            updateGameScreen();
+
+        }
+
+
+        /* TURN DISPLAY */
+
+        function updateTurnDisplay() {
+
+            const company =
+                companies[currentPlayer];
+
+
             document.getElementById(
                 "turnText"
             ).textContent =
-                "Your turn";
+                company.name + "'s turn";
 
 
             document.getElementById(
@@ -489,16 +525,76 @@
             document.getElementById(
                 "moneyResult"
             ).textContent =
-                "Roll the dice to receive money.";
+                "Waiting for income...";
+
+
+            const rollButton =
+                document.getElementById(
+                    "rollButton"
+                );
+
+
+            if (currentPlayer === 0) {
+
+                rollButton.style.display =
+                    "inline-block";
+
+                rollButton.disabled = false;
+
+            } else {
+
+                rollButton.style.display =
+                    "none";
+
+            }
 
 
             updateGameScreen();
+
+
+            // אם זה בוט, הוא מטיל אוטומטית
+
+            if (currentPlayer !== 0) {
+
+                setTimeout(
+                    botRollIncome,
+                    1000
+                );
+
+            }
+
         }
 
 
-        /* ROLL FOR INCOME */
+        /* PLAYER ROLL */
 
         function rollIncome() {
+
+            if (currentPlayer !== 0) {
+                return;
+            }
+
+            performIncomeRoll();
+
+        }
+
+
+        /* BOT ROLL */
+
+        function botRollIncome() {
+
+            if (currentPlayer === 0) {
+                return;
+            }
+
+            performIncomeRoll();
+
+        }
+
+
+        /* ACTUAL INCOME ROLL */
+
+        function performIncomeRoll() {
 
             const dice =
                 Math.floor(
@@ -514,7 +610,7 @@
             /*
                 The dice tells us
                 how many money cards
-                we draw.
+                to draw.
             */
 
             for (let i = 0; i < dice; i++) {
@@ -525,33 +621,89 @@
                 cards.push(card);
 
                 totalMoney += card;
+
             }
 
 
-            /*
-                Add the money
-                to YOUR COMPANY.
-            */
+            const company =
+                companies[currentPlayer];
 
-            companies[0].money += totalMoney;
+
+            company.money += totalMoney;
 
 
             document.getElementById(
                 "diceResult"
             ).textContent =
-                "🎲 You rolled: " + dice;
+                "🎲 " +
+                company.name +
+                " rolled: " +
+                dice;
 
 
             document.getElementById(
                 "moneyResult"
             ).textContent =
                 "💰 Money cards: " +
-                cards.map(value => "$" + value).join(", ") +
+                cards
+                    .map(value => "$" + value)
+                    .join(", ") +
                 " = $" +
                 totalMoney;
 
 
             updateGameScreen();
+
+
+            /*
+                Wait a moment,
+                then move to next player.
+            */
+
+            setTimeout(
+                nextTurn,
+                1500
+            );
+
+        }
+
+
+        /* NEXT TURN */
+
+        function nextTurn() {
+
+            currentPlayer++;
+
+
+            /*
+                If everyone has played,
+                start the next round.
+            */
+
+            if (currentPlayer >= companies.length) {
+
+                currentPlayer = 0;
+
+                currentRound++;
+
+
+                /*
+                    For now we keep playing.
+                    Round-ending rules will
+                    be added later.
+                */
+
+                if (currentRound > totalRounds) {
+
+                    currentRound = 1;
+
+                }
+
+            }
+
+
+            updateTurnDisplay();
+
         }
 
 
@@ -577,75 +729,93 @@
             container.innerHTML = "";
 
 
-            companies.forEach(company => {
+            companies.forEach(
+                (company, index) => {
 
-                const map =
-                    document.createElement(
-                        "div"
+                    const map =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    map.className =
+                        "company-map";
+
+
+                    /*
+                        Highlight the company
+                        whose turn it is.
+                    */
+
+                    if (
+                        index === currentPlayer
+                    ) {
+
+                        map.classList.add(
+                            "active-company"
+                        );
+
+                    }
+
+
+                    let stocksHTML = "";
+
+
+                    company.stocks.forEach(
+                        (stock, stockIndex) => {
+
+                            stocksHTML += `
+
+                                <div class="stock">
+
+                                    <div class="stock-name">
+                                        ${stock.name}
+                                    </div>
+
+                                    <div class="stock-value">
+                                        $${stock.value}
+                                    </div>
+
+                                    <div class="stock-number">
+                                        Stock ${stockIndex + 1}
+                                    </div>
+
+                                </div>
+
+                            `;
+
+                        }
                     );
 
 
-                map.className =
-                    "company-map";
+                    map.innerHTML = `
 
+                        <div class="company-title">
 
-                let stocksHTML = "";
+                            <h2>
+                                ${company.name}
+                            </h2>
 
-
-                company.stocks.forEach(
-                    (stock, index) => {
-
-                        stocksHTML += `
-
-                            <div class="stock">
-
-                                <div class="stock-name">
-                                    ${stock.name}
-                                </div>
-
-                                <div class="stock-value">
-                                    $${stock.value}
-                                </div>
-
-                                <div class="stock-number">
-                                    Stock ${index + 1}
-                                </div>
-
+                            <div class="cash">
+                                CASH: $${company.money}
                             </div>
 
-                        `;
-
-                    }
-                );
-
-
-                map.innerHTML = `
-
-                    <div class="company-title">
-
-                        <h2>
-                            ${company.name}
-                        </h2>
-
-                        <div class="cash">
-                            CASH: $${company.money}
                         </div>
 
-                    </div>
+
+                        <div class="stock-map">
+
+                            ${stocksHTML}
+
+                        </div>
+
+                    `;
 
 
-                    <div class="stock-map">
+                    container.appendChild(map);
 
-                        ${stocksHTML}
-
-                    </div>
-
-                `;
-
-
-                container.appendChild(map);
-
-            });
+                }
+            );
 
         }
 
