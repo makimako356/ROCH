@@ -17,7 +17,7 @@
             color: #17202a;
         }
 
-        /* ---------- START SCREEN ---------- */
+        /* START SCREEN */
 
         #startScreen {
             min-height: 100vh;
@@ -70,7 +70,7 @@
         }
 
 
-        /* ---------- GAME SCREEN ---------- */
+        /* GAME */
 
         #gameScreen {
             display: none;
@@ -82,7 +82,7 @@
             background: white;
             border-radius: 15px;
             padding: 18px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.12);
         }
 
@@ -99,7 +99,35 @@
         }
 
 
-        /* ---------- COMPANY MAPS ---------- */
+        /* TURN AREA */
+
+        .turn-area {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 0 auto 25px auto;
+            max-width: 700px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+        }
+
+        .turn-area h2 {
+            margin: 5px;
+        }
+
+        #diceResult {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 15px;
+        }
+
+        #moneyResult {
+            font-size: 20px;
+            color: #196f3d;
+            margin: 10px;
+        }
+
+
+        /* COMPANIES */
 
         .companies {
             display: grid;
@@ -139,7 +167,7 @@
         }
 
 
-        /* ---------- STOCK MAP ---------- */
+        /* STOCK MAP */
 
         .stock-map {
             display: grid;
@@ -182,8 +210,6 @@
             color: #7b7d7d;
         }
 
-
-        /* ---------- RESPONSIVE ---------- */
 
         @media (max-width: 800px) {
 
@@ -243,6 +269,31 @@
         </div>
 
 
+        <!-- TURN -->
+
+        <div class="turn-area">
+
+            <h2 id="turnText">
+                Your turn
+            </h2>
+
+            <div id="diceResult">
+                🎲 —
+            </div>
+
+            <div id="moneyResult">
+                Roll the dice to receive money.
+            </div>
+
+            <button onclick="rollIncome()">
+                🎲 ROLL FOR INCOME
+            </button>
+
+        </div>
+
+
+        <!-- COMPANIES -->
+
         <div id="companies" class="companies"></div>
 
     </div>
@@ -254,7 +305,7 @@
         let currentRound = 1;
 
 
-        /* ---------- STOCK TYPES ---------- */
+        /* STOCKS */
 
         const stockTypes = [
 
@@ -291,7 +342,18 @@
         ];
 
 
-        /* ---------- COMPANIES ---------- */
+        /* MONEY CARDS */
+
+        const moneyValues = [
+            100,
+            200,
+            300,
+            400,
+            500
+        ];
+
+
+        /* COMPANIES */
 
         const companies = [
 
@@ -322,7 +384,7 @@
         ];
 
 
-        /* ---------- DRAW STOCKS ---------- */
+        /* DRAW STOCKS */
 
         function drawStocks() {
 
@@ -333,7 +395,8 @@
                 let randomStock =
                     stockTypes[
                         Math.floor(
-                            Math.random() * stockTypes.length
+                            Math.random() *
+                            stockTypes.length
                         )
                     ];
 
@@ -351,7 +414,20 @@
         }
 
 
-        /* ---------- START GAME ---------- */
+        /* DRAW ONE MONEY CARD */
+
+        function drawMoneyCard() {
+
+            return moneyValues[
+                Math.floor(
+                    Math.random() *
+                    moneyValues.length
+                )
+            ];
+        }
+
+
+        /* START GAME */
 
         function startGame() {
 
@@ -398,11 +474,88 @@
             ).style.display = "block";
 
 
+            document.getElementById(
+                "turnText"
+            ).textContent =
+                "Your turn";
+
+
+            document.getElementById(
+                "diceResult"
+            ).textContent =
+                "🎲 —";
+
+
+            document.getElementById(
+                "moneyResult"
+            ).textContent =
+                "Roll the dice to receive money.";
+
+
             updateGameScreen();
         }
 
 
-        /* ---------- DISPLAY GAME ---------- */
+        /* ROLL FOR INCOME */
+
+        function rollIncome() {
+
+            const dice =
+                Math.floor(
+                    Math.random() * 6
+                ) + 1;
+
+
+            let totalMoney = 0;
+
+            let cards = [];
+
+
+            /*
+                The dice tells us
+                how many money cards
+                we draw.
+            */
+
+            for (let i = 0; i < dice; i++) {
+
+                const card =
+                    drawMoneyCard();
+
+                cards.push(card);
+
+                totalMoney += card;
+            }
+
+
+            /*
+                Add the money
+                to YOUR COMPANY.
+            */
+
+            companies[0].money += totalMoney;
+
+
+            document.getElementById(
+                "diceResult"
+            ).textContent =
+                "🎲 You rolled: " + dice;
+
+
+            document.getElementById(
+                "moneyResult"
+            ).textContent =
+                "💰 Money cards: " +
+                cards.map(value => "$" + value).join(", ") +
+                " = $" +
+                totalMoney;
+
+
+            updateGameScreen();
+        }
+
+
+        /* DISPLAY GAME */
 
         function updateGameScreen() {
 
