@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROCH - Richest Only Come Here</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            text-align: center;
+        }
+
+        .screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-weight: normal;
+            color: #aaa;
+        }
+
+        button {
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        select {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px;
+        }
+
+        #gameScreen {
+            display: none;
+        }
+
+        .company {
+            display: inline-block;
+            background: #222;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 10px;
+            width: 180px;
+        }
+
+        .money {
+            font-size: 28px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- מסך פתיחה -->
+    <div id="startScreen" class="screen">
+
+        <h1>ROCH</h1>
+        <h2>RICHEST ONLY COME HERE</h2>
+
+        <p>Choose the number of rounds:</p>
+
+        <select id="roundSelect">
+            <option value="3">3 rounds</option>
+            <option value="5">5 rounds</option>
+            <option value="10">10 rounds</option>
+        </select>
+
+        <button onclick="startGame()">START GAME</button>
+
+    </div>
+
+
+    <!-- מסך המשחק -->
+    <div id="gameScreen" class="screen">
+
+        <h1>ROCH</h1>
+
+        <h2 id="roundText">Round 1</h2>
+
+        <div id="companies"></div>
+
+    </div>
+
+
+    <script>
+
+        let totalRounds = 3;
+        let currentRound = 1;
+
+        const companies = [
+            {
+                name: "Your Company",
+                money: 5000
+            },
+            {
+                name: "Bot 1",
+                money: 5000
+            },
+            {
+                name: "Bot 2",
+                money: 5000
+            },
+            {
+                name: "Bot 3",
+                money: 5000
+            }
+        ];
+
+
+        function startGame() {
+
+            totalRounds = Number(
+                document.getElementById("roundSelect").value
+            );
+
+            currentRound = 1;
+
+            document.getElementById("startScreen").style.display = "none";
+            document.getElementById("gameScreen").style.display = "flex";
+
+            updateGameScreen();
+        }
+
+
+        function updateGameScreen() {
+
+            document.getElementById("roundText").textContent =
+                "Round " + currentRound + " / " + totalRounds;
+
+            const container =
+                document.getElementById("companies");
+
+            container.innerHTML = "";
+
+            companies.forEach(company => {
+
+                const div = document.createElement("div");
+
+                div.className = "company";
+
+                div.innerHTML = `
+                    <h2>${company.name}</h2>
+                    <div class="money">$${company.money}</div>
+                `;
+
+                container.appendChild(div);
+            });
+        }
+
+    </script>
+
+</body>
+</html>
