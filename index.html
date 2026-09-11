@@ -1,572 +1,751 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROCH - Richest Only Come Here</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROCH — Richest Only Come Here</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+*{
+    box-sizing:border-box;
+}
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #e8edf3;
-            color: #17202a;
-        }
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#dfeaf3;
+    color:#17202a;
+}
 
-        #startScreen {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #dfe9f3, #ffffff);
-        }
+header{
+    background:#243b53;
+    color:white;
+    padding:18px;
+    text-align:center;
+}
 
-        #startScreen h1 {
-            font-size: 72px;
-            margin: 0;
-            letter-spacing: 5px;
-        }
+header h1{
+    margin:0 0 5px;
+    font-size:34px;
+}
 
-        #startScreen h2 {
-            margin-top: 5px;
-            color: #566573;
-            font-weight: normal;
-        }
+header p{
+    margin:0;
+    opacity:.85;
+}
 
-        #startScreen p {
-            margin-top: 35px;
-            font-size: 18px;
-        }
+#topBar{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+    padding:15px;
+    background:#f7fafc;
+    border-bottom:1px solid #cbd5e0;
+}
 
-        select {
-            padding: 10px 18px;
-            font-size: 18px;
-            border-radius: 8px;
-            border: 1px solid #aaa;
-        }
+.infoBox{
+    background:white;
+    padding:10px 16px;
+    border-radius:10px;
+    box-shadow:0 2px 6px #0002;
+    font-weight:bold;
+}
 
-        button {
-            padding: 10px 16px;
-            margin: 5px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            background: #2874a6;
-            color: white;
-        }
+button{
+    border:0;
+    border-radius:8px;
+    padding:9px 13px;
+    cursor:pointer;
+    font-weight:bold;
+    background:#3182ce;
+    color:white;
+    margin:3px;
+}
 
-        button:hover {
-            background: #1f618d;
-        }
+button:hover:not(:disabled){
+    background:#2b6cb0;
+}
 
-        button:disabled {
-            background: #95a5a6;
-            cursor: not-allowed;
-        }
+button:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
 
-        #startScreen button {
-            padding: 14px 30px;
-            font-size: 20px;
-            margin-top: 20px;
-        }
+button.sell{
+    background:#e53e3e;
+}
 
-        #gameScreen {
-            display: none;
-            min-height: 100vh;
-            padding: 25px;
-        }
+button.sell:hover:not(:disabled){
+    background:#c53030;
+}
 
-        .game-header {
-            background: white;
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 20px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-        }
+button.open{
+    background:#38a169;
+}
 
-        .game-header h1 {
-            margin: 0;
-            font-size: 42px;
-            letter-spacing: 3px;
-        }
+button.close{
+    background:#718096;
+}
 
-        .game-header h2 {
-            margin: 5px;
-            color: #566573;
-            font-weight: normal;
-        }
+button.buy{
+    background:#805ad5;
+}
 
-        .turn-area {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin: 0 auto 25px auto;
-            max-width: 800px;
-            text-align: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-        }
+button.bank{
+    background:#dd6b20;
+}
 
-        .turn-area h2 {
-            margin: 5px;
-        }
+button.keep{
+    background:#319795;
+}
 
-        #diceResult {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 15px;
-        }
+button.big{
+    font-size:18px;
+    padding:13px 22px;
+}
 
-        #moneyResult {
-            font-size: 18px;
-            color: #196f3d;
-            margin: 10px;
-            min-height: 25px;
-        }
+#game{
+    max-width:1500px;
+    margin:auto;
+    padding:20px;
+}
 
-        #actionMessage {
-            font-size: 17px;
-            min-height: 25px;
-            margin: 10px;
-        }
+.company{
+    background:white;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:20px;
+    box-shadow:0 3px 10px #0002;
+    border:3px solid transparent;
+}
 
-        .companies {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(350px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
-            margin: auto;
-        }
+.company.active{
+    border-color:#3182ce;
+}
 
-        .company-map {
-            background: #ffffff;
-            border: 3px solid #34495e;
-            border-radius: 18px;
-            padding: 18px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-        }
+.company h2{
+    margin:0 0 5px;
+}
 
-        .active-company {
-            border: 4px solid #2874a6;
-            box-shadow: 0 0 15px rgba(40,116,166,0.35);
-        }
+.companyStats{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:12px;
+}
 
-        .company-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #d5d8dc;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
+.stat{
+    background:#edf2f7;
+    padding:7px 12px;
+    border-radius:8px;
+}
 
-        .company-title h2 {
-            margin: 0;
-        }
+.cash{
+    color:#16844a;
+    font-weight:bold;
+}
 
-        .cash {
-            background: #d5f5e3;
-            color: #196f3d;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-weight: bold;
-        }
+.stockGrid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(180px,1fr));
+    gap:10px;
+}
 
-        .stock-map {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            background: #d6eaf8;
-            padding: 10px;
-            border-radius: 12px;
-        }
+.stock{
+    border:2px solid #cbd5e0;
+    border-radius:10px;
+    padding:10px;
+    background:#f8fafc;
+}
 
-        .stock {
-            min-height: 130px;
-            background: #ffffff;
-            border: 2px solid #7fb3d5;
-            border-radius: 10px;
-            padding: 8px;
+.stock.openStock{
+    border-color:#38a169;
+    background:#f0fff4;
+}
 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+.stock.closedStock{
+    border-color:#a0aec0;
+}
 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+.stockName{
+    font-weight:bold;
+    font-size:18px;
+}
 
-        .stock.open {
-            border: 3px solid #f39c12;
-            background: #fef5e7;
-        }
+.stockValue{
+    margin:4px 0;
+}
 
-        .stock-name {
-            font-size: 17px;
-            font-weight: bold;
-        }
+.stockStatus{
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
 
-        .stock-value {
-            margin-top: 7px;
-            font-size: 19px;
-            font-weight: bold;
-            color: #2874a6;
-        }
+.openText{
+    color:#16844a;
+}
 
-        .stock-number {
-            margin-top: 3px;
-            font-size: 12px;
-            color: #7b7d7d;
-        }
+.closedText{
+    color:#718096;
+}
 
-        .stock-status {
-            margin-top: 5px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #d68910;
-        }
+.logBox{
+    background:#1a202c;
+    color:#e2e8f0;
+    border-radius:12px;
+    padding:15px;
+    height:230px;
+    overflow-y:auto;
+    margin-top:20px;
+    font-family:monospace;
+}
 
-        .stock button {
-            font-size: 11px;
-            padding: 6px 8px;
-            margin: 3px;
-        }
+.logLine{
+    margin-bottom:4px;
+}
 
-        @media (max-width: 800px) {
-            .companies {
-                grid-template-columns: 1fr;
-            }
+#actions{
+    background:white;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:20px;
+    box-shadow:0 3px 10px #0002;
+    text-align:center;
+}
 
-            #startScreen h1 {
-                font-size: 52px;
-            }
+#status{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
 
-            .stock-map {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+.overlay{
+    position:fixed;
+    inset:0;
+    background:#0009;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+}
+
+.modal{
+    background:white;
+    border-radius:18px;
+    padding:30px;
+    max-width:600px;
+    width:90%;
+    text-align:center;
+    box-shadow:0 10px 40px #0006;
+}
+
+.modal h2{
+    margin-top:0;
+}
+
+.choiceButtons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+#startScreen{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.startBox{
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 5px 25px #0003;
+}
+
+.roundChoice button{
+    font-size:20px;
+    padding:15px 25px;
+}
+
+.hidden{
+    display:none !important;
+}
+
+@media(max-width:800px){
+    .stockGrid{
+        grid-template-columns:repeat(2,minmax(150px,1fr));
+    }
+}
+
+@media(max-width:550px){
+    .stockGrid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <div id="startScreen">
-
-    <h1>ROCH</h1>
-
-    <h2>RICHEST ONLY COME HERE</h2>
-
-    <p>Choose the number of rounds:</p>
-
-    <select id="roundSelect">
-        <option value="3">3 rounds</option>
-        <option value="5">5 rounds</option>
-        <option value="10">10 rounds</option>
-    </select>
-
-    <button onclick="startGame()">START GAME</button>
-
-</div>
-
-
-<div id="gameScreen">
-
-    <div class="game-header">
+    <div class="startBox">
         <h1>ROCH</h1>
-        <h2 id="roundText"></h2>
+        <h2>Richest Only Come Here</h2>
+        <p>Become the most successful company.</p>
+
+        <h3>Choose number of rounds:</h3>
+
+        <div class="roundChoice">
+            <button onclick="startGame(3)">3 Rounds</button>
+            <button onclick="startGame(5)">5 Rounds</button>
+            <button onclick="startGame(10)">10 Rounds</button>
+        </div>
     </div>
+</div>
 
+<div id="gameScreen" class="hidden">
 
-    <div class="turn-area">
+<header>
+    <h1>ROCH</h1>
+    <p>Richest Only Come Here</p>
+</header>
 
-        <h2 id="turnText">Your turn</h2>
+<div id="topBar">
+    <div class="infoBox">Round: <span id="roundDisplay">1</span></div>
+    <div class="infoBox">Turn: <span id="turnDisplay">1</span></div>
+    <div class="infoBox">Current: <span id="currentPlayerDisplay"></span></div>
+    <div class="infoBox">Rounds: <span id="totalRoundsDisplay"></span></div>
+</div>
 
-        <div id="diceResult">🎲 —</div>
+<div id="game">
 
-        <div id="moneyResult">
-            Waiting for income...
-        </div>
-
-        <div id="actionMessage">
-            Roll for income to begin your turn.
-        </div>
-
-        <button id="rollButton" onclick="rollIncome()">
-            🎲 ROLL FOR INCOME
-        </button>
-
+    <div id="actions">
+        <div id="status"></div>
         <div id="actionButtons"></div>
-
     </div>
 
+    <div id="companies"></div>
 
-    <div id="companies" class="companies"></div>
+    <div class="logBox" id="log"></div>
 
 </div>
 
+</div>
+
+<div id="roundModal" class="overlay hidden">
+    <div class="modal">
+        <h2>Round Over!</h2>
+        <p id="roundReason"></p>
+        <p>
+            You may now decide what to do with your remaining stocks.
+        </p>
+
+        <div id="roundChoiceButtons" class="choiceButtons"></div>
+    </div>
+</div>
+
+<div id="gameOverModal" class="overlay hidden">
+    <div class="modal">
+        <h2>ROCH — Game Over</h2>
+        <div id="finalResults"></div>
+        <button class="big" onclick="location.reload()">Play Again</button>
+    </div>
+</div>
 
 <script>
 
-let totalRounds = 3;
-let currentRound = 1;
-let currentPlayer = 0;
-
-let incomeRolled = false;
-let turnActionFinished = false;
-
-
-/* ---------------- STOCK TYPES ---------------- */
+/* =========================================================
+   STOCK DEFINITIONS
+========================================================= */
 
 const stockTypes = [
-
     {
-        name: "Stock A",
-        value: 400,
-        changes: [-100, -50, 0, 50, 100, 200]
+        name:"Stock A",
+        value:400,
+        changes:[-100,-50,0,50,100,200]
     },
-
     {
-        name: "Stock B",
-        value: 500,
-        changes: [-200, -100, -50, 50, 100, 300]
+        name:"Stock B",
+        value:500,
+        changes:[-200,-100,-50,50,100,300]
     },
-
     {
-        name: "Stock C",
-        value: 600,
-        changes: [-50, 0, 50, 100, 150, 200]
+        name:"Stock C",
+        value:600,
+        changes:[-50,0,50,100,150,200]
     },
-
     {
-        name: "Stock D",
-        value: 700,
-        changes: [-200, -100, 0, 100, 200, 400]
+        name:"Stock D",
+        value:700,
+        changes:[-200,-100,0,100,200,400]
     },
-
     {
-        name: "Stock E",
-        value: 800,
-        changes: [-300, -100, 0, 100, 200, 500]
+        name:"Stock E",
+        value:800,
+        changes:[-300,-100,0,100,200,500]
     },
-
     {
-        name: "Stock F",
-        value: 900,
-        changes: [-400, -200, -50, 100, 300, 600]
+        name:"Stock F",
+        value:900,
+        changes:[-400,-200,-50,100,300,600]
     }
-
 ];
 
+/*
+    There are multiple physical copies of each stock.
+    The pile is shared by everyone.
+*/
 
-/* ---------------- MONEY CARDS ---------------- */
-
-const moneyValues = [
-    100,
-    200,
-    300,
-    400,
-    500
-];
+const STOCK_COPIES = 10;
 
 
-/* ---------------- COMPANIES ---------------- */
+/* =========================================================
+   MONEY DECK
+========================================================= */
 
-const companies = [
+const MONEY_VALUES = [100,200,300,400,500];
 
-    {
-        name: "YOUR COMPANY",
-        money: 0,
-        stocks: []
-    },
-
-    {
-        name: "BOT 1",
-        money: 0,
-        stocks: []
-    },
-
-    {
-        name: "BOT 2",
-        money: 0,
-        stocks: []
-    },
-
-    {
-        name: "BOT 3",
-        money: 0,
-        stocks: []
-    }
-
-];
+const MONEY_CARDS_PER_VALUE = 30;
 
 
-/* ---------------- DRAW STOCK ---------------- */
+/* =========================================================
+   GAME STATE
+========================================================= */
 
-function drawStocks() {
+let totalRounds = 3;
+let currentRound = 1;
+let turnNumber = 1;
 
-    let stocks = [];
+let currentPlayer = 0;
 
-    for (let i = 0; i < 5; i++) {
+let companies = [];
 
-        let randomStock =
-            stockTypes[
-                Math.floor(
-                    Math.random() *
-                    stockTypes.length
-                )
-            ];
+let stockDeck = [];
+let bankStocks = [];
 
-        stocks.push({
+let moneyDeck = [];
 
-            name: randomStock.name,
+let incomeRolled = false;
 
-            value: randomStock.value,
+let roundEnding = false;
+let gameOver = false;
 
-            changes: [...randomStock.changes],
-
-            open: false
-
-        });
-
-    }
-
-    // חובה שלפחות מניה אחת תהיה פתוחה
-    if (stocks.length > 0) {
-        stocks[0].open = true;
-    }
-
-    return stocks;
-}
+let lastActionTaken = false;
 
 
-/* ---------------- MONEY ---------------- */
+/* =========================================================
+   CREATE PLAYERS
+========================================================= */
 
-function drawMoneyCard() {
+function createPlayers(){
 
-    return moneyValues[
-        Math.floor(
-            Math.random() *
-            moneyValues.length
-        )
+    companies = [
+
+        {
+            name:"Your Company",
+            bot:false,
+            cash:0,
+            stocks:[],
+            nothingTurns:0,
+            scoreHistory:[]
+        },
+
+        {
+            name:"Bot Alpha",
+            bot:true,
+            cash:0,
+            stocks:[],
+            nothingTurns:0,
+            scoreHistory:[]
+        },
+
+        {
+            name:"Bot Beta",
+            bot:true,
+            cash:0,
+            stocks:[],
+            nothingTurns:0,
+            scoreHistory:[]
+        },
+
+        {
+            name:"Bot Gamma",
+            bot:true,
+            cash:0,
+            stocks:[],
+            nothingTurns:0,
+            scoreHistory:[]
+        }
+
     ];
+}
+
+
+/* =========================================================
+   STOCK DECK
+========================================================= */
+
+function createStockDeck(){
+
+    stockDeck = [];
+
+    for(let type of stockTypes){
+
+        for(let i=0;i<STOCK_COPIES;i++){
+
+            stockDeck.push({
+                name:type.name,
+                value:type.value,
+                changes:[...type.changes],
+                open:false
+            });
+
+        }
+
+    }
+
+    shuffle(stockDeck);
+}
+
+
+/* =========================================================
+   MONEY DECK
+========================================================= */
+
+function createMoneyDeck(){
+
+    moneyDeck=[];
+
+    for(let value of MONEY_VALUES){
+
+        for(let i=0;i<MONEY_CARDS_PER_VALUE;i++){
+
+            moneyDeck.push(value);
+
+        }
+
+    }
+
+    shuffle(moneyDeck);
+}
+
+
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+function shuffle(array){
+
+    for(let i=array.length-1;i>0;i--){
+
+        const j=Math.floor(Math.random()*(i+1));
+
+        [array[i],array[j]]=[array[j],array[i]];
+
+    }
 
 }
 
 
-/* ---------------- START GAME ---------------- */
+/* =========================================================
+   DRAW STOCK
+========================================================= */
 
-function startGame() {
+function drawStock(){
 
-    totalRounds =
-        Number(
-            document.getElementById(
-                "roundSelect"
-            ).value
+    if(stockDeck.length===0){
+
+        recycleBankStocks();
+
+    }
+
+    if(stockDeck.length===0){
+        return null;
+    }
+
+    return stockDeck.pop();
+
+}
+
+
+/* =========================================================
+   RECYCLE BANK STOCKS
+========================================================= */
+
+function recycleBankStocks(){
+
+    if(bankStocks.length===0){
+        return;
+    }
+
+    stockDeck.push(...bankStocks);
+
+    bankStocks=[];
+
+    shuffle(stockDeck);
+
+    log("The stock pile was replenished from stocks sold to the bank.");
+
+}
+
+
+/* =========================================================
+   DRAW 5 STOCKS
+========================================================= */
+
+function giveFiveStocks(company){
+
+    for(let i=0;i<5;i++){
+
+        const stock=drawStock();
+
+        if(!stock){
+            log("There are temporarily no stocks available.");
+            break;
+        }
+
+        stock.open=false;
+
+        company.stocks.push(stock);
+
+    }
+
+    ensureOneOpen(company);
+
+}
+
+
+/* =========================================================
+   START GAME
+========================================================= */
+
+function startGame(rounds){
+
+    totalRounds=rounds;
+
+    currentRound=1;
+
+    turnNumber=1;
+
+    currentPlayer=0;
+
+    roundEnding=false;
+
+    gameOver=false;
+
+    incomeRolled=false;
+
+    document.getElementById("startScreen").classList.add("hidden");
+    document.getElementById("gameScreen").classList.remove("hidden");
+
+    createPlayers();
+
+    createStockDeck();
+
+    createMoneyDeck();
+
+    for(let company of companies){
+
+        giveFiveStocks(company);
+
+        let stockTotal=company.stocks.reduce(
+            (sum,s)=>sum+s.value,
+            0
         );
 
-    currentRound = 1;
-    currentPlayer = 0;
+        company.cash=5000-stockTotal;
 
-    companies.forEach(company => {
+    }
 
-        company.stocks = drawStocks();
+    log("Game started!");
 
-        let stockTotal =
-            company.stocks.reduce(
-                (sum, stock) =>
-                    sum + stock.value,
-                0
-            );
+    log("Every company begins with a total value of 5,000.");
 
-        company.money =
-            5000 - stockTotal;
-
-    });
-
-    document.getElementById(
-        "startScreen"
-    ).style.display = "none";
-
-    document.getElementById(
-        "gameScreen"
-    ).style.display = "block";
+    updateScreen();
 
     startTurn();
 
 }
 
 
-/* ---------------- START TURN ---------------- */
+/* =========================================================
+   LOG
+========================================================= */
 
-function startTurn() {
+function log(message){
 
-    incomeRolled = false;
-    turnActionFinished = false;
+    const logBox=document.getElementById("log");
 
-    document.getElementById(
-        "turnText"
-    ).textContent =
-        companies[currentPlayer].name +
-        "'s turn";
+    const line=document.createElement("div");
 
-    document.getElementById(
-        "diceResult"
-    ).textContent =
-        "🎲 —";
+    line.className="logLine";
 
-    document.getElementById(
-        "moneyResult"
-    ).textContent =
-        "Roll for income.";
+    line.textContent=message;
 
-    document.getElementById(
-        "actionMessage"
-    ).textContent =
-        "";
+    logBox.appendChild(line);
 
-    document.getElementById(
-        "actionButtons"
-    ).innerHTML = "";
-
-    if (currentPlayer === 0) {
-
-        document.getElementById(
-            "rollButton"
-        ).style.display = "inline-block";
-
-        document.getElementById(
-            "rollButton"
-        ).disabled = false;
-
-    } else {
-
-        document.getElementById(
-            "rollButton"
-        ).style.display = "none";
-
-        setTimeout(
-            botTurn,
-            1000
-        );
-
-    }
-
-    updateGameScreen();
+    logBox.scrollTop=logBox.scrollHeight;
 
 }
 
 
-/* ---------------- INCOME ---------------- */
+/* =========================================================
+   DICE
+========================================================= */
 
-function rollIncome() {
+function rollDie(){
 
-    if (currentPlayer !== 0) {
+    return Math.floor(Math.random()*6)+1;
+
+}
+
+
+/* =========================================================
+   START TURN
+========================================================= */
+
+function startTurn(){
+
+    if(gameOver || roundEnding){
+        return;
+    }
+
+    incomeRolled=false;
+
+    lastActionTaken=false;
+
+    const company=companies[currentPlayer];
+
+    document.getElementById("status").textContent=
+        company.name+"'s turn";
+
+    updateScreen();
+
+    if(company.bot){
+
+        setTimeout(botTurn,900);
+
+    }
+
+}
+
+
+/* =========================================================
+   INCOME
+========================================================= */
+
+function rollIncome(){
+
+    if(incomeRolled){
+        return;
+    }
+
+    if(companies[currentPlayer].bot){
         return;
     }
 
@@ -575,406 +754,436 @@ function rollIncome() {
 }
 
 
-function performIncomeRoll() {
+/* =========================================================
+   PERFORM INCOME ROLL
+========================================================= */
 
-    const dice =
-        Math.floor(
-            Math.random() * 6
-        ) + 1;
+function performIncomeRoll(){
 
-    let totalMoney = 0;
-    let cards = [];
+    if(incomeRolled || roundEnding || gameOver){
+        return;
+    }
 
-    for (let i = 0; i < dice; i++) {
+    incomeRolled=true;
 
-        const card =
-            drawMoneyCard();
+    const company=companies[currentPlayer];
 
-        cards.push(card);
-        totalMoney += card;
+    const dice=rollDie();
+
+    let income=0;
+
+    let cardsDrawn=[];
+
+    for(let i=0;i<dice;i++){
+
+        if(moneyDeck.length===0){
+
+            log("The money deck is empty for this round.");
+
+            break;
+
+        }
+
+        const card=moneyDeck.pop();
+
+        income+=card;
+
+        cardsDrawn.push(card);
 
     }
 
-    companies[currentPlayer].money +=
-        totalMoney;
+    company.cash+=income;
 
-    incomeRolled = true;
+    log(
+        company.name+
+        " rolled "+dice+
+        " and received "+
+        income+
+        " cash."
+    );
 
-    document.getElementById(
-        "diceResult"
-    ).textContent =
-        "🎲 Rolled: " + dice;
+    company.nothingTurns=0;
 
-    document.getElementById(
-        "moneyResult"
-    ).textContent =
-        "💰 " +
-        cards.map(x => "$" + x).join(", ") +
-        " = $" + totalMoney;
+    updateScreen();
 
-    document.getElementById(
-        "rollButton"
-    ).disabled = true;
+    if(company.bot){
 
-    showActions();
+        setTimeout(botActions,700);
 
-    updateGameScreen();
+    }
 
 }
 
 
-/* ---------------- ACTION BUTTONS ---------------- */
+/* =========================================================
+   TURN ACTION
+========================================================= */
 
-function showActions() {
+function markAction(){
 
-    const area =
-        document.getElementById(
-            "actionButtons"
-        );
+    lastActionTaken=true;
 
-    area.innerHTML = `
-
-        <button onclick="finishTurn()">
-            END TURN
-        </button>
-
-    `;
+    companies[currentPlayer].nothingTurns=0;
 
 }
 
 
-/* ---------------- OPEN / CLOSE STOCK ---------------- */
+/* =========================================================
+   OPEN / CLOSE STOCK
+========================================================= */
 
-function toggleStock(playerIndex, stockIndex) {
+function toggleStock(stockIndex){
 
-    if (currentPlayer !== playerIndex) {
+    if(!canHumanAct()){
         return;
     }
 
-    if (!incomeRolled) {
+    const company=companies[currentPlayer];
+
+    const stock=company.stocks[stockIndex];
+
+    if(!stock){
         return;
     }
 
-    const company =
-        companies[playerIndex];
+    if(stock.open){
 
-    const stock =
-        company.stocks[stockIndex];
+        const openCount=
+            company.stocks.filter(s=>s.open).length;
 
+        if(openCount<=1){
 
-    if (stock.open) {
-
-        /*
-            Cannot close it if this
-            is the only open stock.
-        */
-
-        const openCount =
-            company.stocks.filter(
-                s => s.open
-            ).length;
-
-        if (openCount <= 1) {
-
-            document.getElementById(
-                "actionMessage"
-            ).textContent =
-                "You must keep at least one stock open for sale.";
+            alert(
+                "You must always have at least one stock open for sale."
+            );
 
             return;
 
         }
 
-        stock.open = false;
+        stock.open=false;
 
-    } else {
-
-        stock.open = true;
-
-    }
-
-    updateGameScreen();
-
-}
-
-
-/* ---------------- PRICE ROLL ---------------- */
-
-function getStockPrice(stock) {
-
-    const dice =
-        Math.floor(
-            Math.random() * 6
-        ) + 1;
-
-    const change =
-        stock.changes[dice - 1];
-
-    const price =
-        stock.value + change;
-
-    return {
-        dice: dice,
-        change: change,
-        price: price
-    };
-
-}
-
-
-/* ---------------- BUY STOCK ---------------- */
-
-function buyStock(
-    sellerIndex,
-    stockIndex
-) {
-
-    if (!incomeRolled) {
-        return;
-    }
-
-    if (sellerIndex === currentPlayer) {
-        return;
-    }
-
-    const seller =
-        companies[sellerIndex];
-
-    const buyer =
-        companies[currentPlayer];
-
-    const stock =
-        seller.stocks[stockIndex];
-
-
-    if (!stock.open) {
-        return;
-    }
-
-
-    /*
-        The buyer must be able to
-        pay even at the maximum
-        possible price.
-    */
-
-    const maximumPrice =
-        Math.max(
-            ...stock.changes.map(
-                change =>
-                    stock.value + change
-            )
+        log(
+            company.name+
+            " closed "+
+            stock.name+
+            " for sale."
         );
 
+    }else{
 
-    if (buyer.money < maximumPrice) {
+        stock.open=true;
 
-        document.getElementById(
-            "actionMessage"
-        ).textContent =
-            "You don't have enough money to guarantee this purchase.";
+        log(
+            company.name+
+            " opened "+
+            stock.name+
+            " for sale."
+        );
+
+    }
+
+    markAction();
+
+    updateScreen();
+
+}
+
+
+/* =========================================================
+   ENSURE ONE OPEN
+========================================================= */
+
+function ensureOneOpen(company){
+
+    if(company.stocks.length===0){
+        return;
+    }
+
+    if(!company.stocks.some(s=>s.open)){
+
+        company.stocks[0].open=true;
+
+    }
+
+}
+
+
+/* =========================================================
+   SELL TO BANK
+========================================================= */
+
+function sellToBank(stockIndex){
+
+    if(!canHumanAct()){
+        return;
+    }
+
+    const company=companies[currentPlayer];
+
+    const stock=company.stocks[stockIndex];
+
+    if(!stock){
+        return;
+    }
+
+    company.cash+=stock.value;
+
+    company.stocks.splice(stockIndex,1);
+
+    stock.open=false;
+
+    bankStocks.push(stock);
+
+    markAction();
+
+    log(
+        company.name+
+        " sold "+
+        stock.name+
+        " to the bank for "+
+        stock.value+"."
+    );
+
+    checkRoundEnd();
+
+    if(!roundEnding){
+        ensureOneOpen(company);
+        updateScreen();
+    }
+
+}
+
+
+/* =========================================================
+   SELL ALL TO BANK
+   USED AT ROUND END
+========================================================= */
+
+function sellAllToBank(company){
+
+    let total=0;
+
+    while(company.stocks.length>0){
+
+        const stock=company.stocks.pop();
+
+        total+=stock.value;
+
+        stock.open=false;
+
+        bankStocks.push(stock);
+
+    }
+
+    company.cash+=total;
+
+    log(
+        company.name+
+        " sold all remaining stocks to the bank for "+
+        total+"."
+    );
+
+}
+
+
+/* =========================================================
+   BUY STOCK
+========================================================= */
+
+function buyStock(sellerIndex,stockIndex){
+
+    if(!canHumanAct()){
+        return;
+    }
+
+    if(sellerIndex===currentPlayer){
+        return;
+    }
+
+    const buyer=companies[currentPlayer];
+
+    const seller=companies[sellerIndex];
+
+    const stock=seller.stocks[stockIndex];
+
+    if(!stock){
+        return;
+    }
+
+    if(!stock.open){
+        return;
+    }
+
+    /*
+        We check whether the buyer can afford the worst
+        possible price before rolling.
+        This prevents a forced impossible purchase.
+    */
+
+    const maximumPrice=
+        stock.value+
+        Math.max(...stock.changes);
+
+    if(buyer.cash<maximumPrice){
+
+        alert(
+            "You cannot buy this stock because you cannot afford its maximum possible price."
+        );
 
         return;
 
     }
 
+    const dice=rollDie();
+
+    const change=stock.changes[dice-1];
+
+    const price=stock.value+change;
 
     /*
-        Roll the price die.
+        Buyer MUST buy after the roll.
     */
 
-    const result =
-        getStockPrice(stock);
+    buyer.cash-=price;
 
+    seller.cash+=price;
 
-    /*
-        The buyer MUST buy
-        at the rolled price.
-    */
+    seller.stocks.splice(stockIndex,1);
 
-    buyer.money -= result.price;
-
-    seller.money += result.price;
-
-
-    /*
-        Remove from seller.
-    */
-
-    seller.stocks.splice(
-        stockIndex,
-        1
-    );
-
-
-    /*
-        Give stock to buyer.
-    */
-
-    stock.open = false;
+    stock.open=false;
 
     buyer.stocks.push(stock);
 
+    markAction();
 
-    /*
-        Seller must still have
-        one open stock if they
-        still own stocks.
-    */
-
-    if (
-        seller.stocks.length > 0 &&
-        !seller.stocks.some(
-            s => s.open
-        )
-    ) {
-
-        seller.stocks[0].open = true;
-
-    }
-
-
-    document.getElementById(
-        "diceResult"
-    ).textContent =
-        "🎲 Price roll: " +
-        result.dice;
-
-    document.getElementById(
-        "actionMessage"
-    ).textContent =
-        "Bought " +
-        stock.name +
-        " for $" +
-        result.price +
-        " (" +
-        (result.change >= 0 ? "+" : "") +
-        result.change +
-        ").";
-
-
-    updateGameScreen();
-
-}
-
-
-/* ---------------- SELL TO BANK ---------------- */
-
-function sellToBank(stockIndex) {
-
-    if (!incomeRolled) {
-        return;
-    }
-
-    const company =
-        companies[currentPlayer];
-
-    const stock =
-        company.stocks[stockIndex];
-
-
-    /*
-        Bank always pays
-        the base value.
-    */
-
-    company.money +=
-        stock.value;
-
-
-    company.stocks.splice(
-        stockIndex,
-        1
+    log(
+        buyer.name+
+        " bought "+
+        stock.name+
+        " from "+
+        seller.name+
+        " for "+
+        price+
+        " (roll "+dice+")."
     );
 
+    ensureOneOpen(seller);
 
-    /*
-        If stocks remain,
-        at least one must be open.
-    */
+    checkRoundEnd();
 
-    if (
-        company.stocks.length > 0 &&
-        !company.stocks.some(
-            s => s.open
-        )
-    ) {
+    if(!roundEnding){
 
-        company.stocks[0].open = true;
+        updateScreen();
 
     }
 
-
-    document.getElementById(
-        "actionMessage"
-    ).textContent =
-        "Sold " +
-        stock.name +
-        " to the bank for $" +
-        stock.value + ".";
+}
 
 
-    updateGameScreen();
+/* =========================================================
+   HUMAN CAN ACT?
+========================================================= */
+
+function canHumanAct(){
+
+    if(gameOver || roundEnding){
+        return false;
+    }
+
+    if(companies[currentPlayer].bot){
+        return false;
+    }
+
+    if(!incomeRolled){
+
+        alert("Roll for income first.");
+
+        return false;
+
+    }
+
+    return true;
 
 }
 
 
-/* ---------------- BOT ---------------- */
+/* =========================================================
+   END TURN
+========================================================= */
 
-function botTurn() {
+function endTurn(){
+
+    if(gameOver || roundEnding){
+        return;
+    }
+
+    const company=companies[currentPlayer];
+
+    if(company.bot){
+        return;
+    }
+
+    if(!incomeRolled){
+
+        alert("You must roll for income first.");
+
+        return;
+
+    }
+
+    finishCurrentTurn();
+
+}
+
+
+/* =========================================================
+   FINISH CURRENT TURN
+========================================================= */
+
+function finishCurrentTurn(){
+
+    const company=companies[currentPlayer];
 
     /*
-        First receive income.
+        A turn with no action means:
+        income happened, but the player did not buy,
+        sell, open, or close anything.
     */
 
-    performIncomeRoll();
+    if(!lastActionTaken){
 
+        company.nothingTurns++;
 
-    setTimeout(() => {
-
-        const bot =
-            companies[currentPlayer];
-
-
-        /*
-            Very simple temporary
-            bot behavior:
-
-            1. Try to sell one stock
-               to the bank if it has
-               lots of cash.
-            2. Otherwise end turn.
-        */
-
-        if (
-            bot.stocks.length > 5 &&
-            bot.stocks.length > 0
-        ) {
-
-            bot.money +=
-                bot.stocks[0].value;
-
-            bot.stocks.splice(0, 1);
-
-        }
-
-
-        setTimeout(
-            nextTurn,
-            1000
+        log(
+            company.name+
+            " took no action this turn. "+
+            company.nothingTurns+
+            " consecutive inactive turn(s)."
         );
 
-    }, 1200);
+    }else{
 
-}
+        company.nothingTurns=0;
 
+    }
 
-/* ---------------- END TURN ---------------- */
+    /*
+        After TWO consecutive inactive turns,
+        the bank automatically buys ONE stock
+        for 100 less than its base value.
+    */
 
-function finishTurn() {
+    if(company.nothingTurns>=2 && company.stocks.length>0){
 
-    if (!incomeRolled) {
-        return;
+        bankForcedPurchase(company);
+
+        company.nothingTurns=0;
+
+        if(roundEnding){
+            return;
+        }
+
     }
 
     nextTurn();
@@ -982,224 +1191,1022 @@ function finishTurn() {
 }
 
 
-/* ---------------- NEXT TURN ---------------- */
+/* =========================================================
+   BANK FORCED PURCHASE
+========================================================= */
 
-function nextTurn() {
+function bankForcedPurchase(company){
 
-    currentPlayer++;
+    if(company.stocks.length===0){
+        return;
+    }
 
+    /*
+        If there are several stocks, the bank buys
+        the first stock in the company's list.
+    */
 
-    if (
-        currentPlayer >=
-        companies.length
-    ) {
+    const stock=company.stocks[0];
 
-        currentPlayer = 0;
+    const price=Math.max(0,stock.value-100);
 
-        currentRound++;
+    company.cash+=price;
 
-        if (
-            currentRound >
-            totalRounds
-        ) {
+    company.stocks.splice(0,1);
 
-            currentRound = 1;
+    stock.open=false;
 
-        }
+    bankStocks.push(stock);
+
+    log(
+        "INACTIVITY PENALTY: The bank bought "+
+        stock.name+
+        " from "+
+        company.name+
+        " for "+
+        price+
+        " (100 below base value)."
+    );
+
+    if(company.stocks.length===0){
+
+        checkRoundEnd();
+
+        return;
 
     }
 
+    ensureOneOpen(company);
+
+    updateScreen();
+
+}
+
+
+/* =========================================================
+   NEXT TURN
+========================================================= */
+
+function nextTurn(){
+
+    if(roundEnding || gameOver){
+        return;
+    }
+
+    currentPlayer++;
+
+    if(currentPlayer>=companies.length){
+
+        currentPlayer=0;
+
+        turnNumber++;
+
+    }
 
     startTurn();
 
 }
 
 
-/* ---------------- DISPLAY ---------------- */
+/* =========================================================
+   BOT TURN
+========================================================= */
 
-function updateGameScreen() {
+function botTurn(){
 
-    document.getElementById(
-        "roundText"
-    ).textContent =
-        "Round " +
-        currentRound +
-        " / " +
-        totalRounds;
+    if(roundEnding || gameOver){
+        return;
+    }
 
+    if(!companies[currentPlayer].bot){
+        return;
+    }
 
-    const container =
-        document.getElementById(
-            "companies"
-        );
+    performIncomeRoll();
 
-    container.innerHTML = "";
+}
 
 
-    companies.forEach(
-        (company, companyIndex) => {
+/* =========================================================
+   BOT ACTIONS
+========================================================= */
 
-            const map =
-                document.createElement(
-                    "div"
-                );
+function botActions(){
 
-            map.className =
-                "company-map";
+    if(roundEnding || gameOver){
+        return;
+    }
+
+    const bot=companies[currentPlayer];
+
+    if(!bot.bot){
+        return;
+    }
+
+    let actionDone=false;
+
+    /*
+        Simple AI:
+        1. Try to sell a stock to the bank if it needs cash.
+        2. Try to buy a stock it can afford.
+        3. Sometimes open/close stocks.
+        4. Otherwise do nothing.
+    */
+
+    /*
+        Open stocks that are closed.
+    */
+
+    for(let i=0;i<bot.stocks.length;i++){
+
+        if(!bot.stocks[i].open && Math.random()<0.35){
+
+            bot.stocks[i].open=true;
+
+            actionDone=true;
+
+            log(
+                bot.name+
+                " opened "+
+                bot.stocks[i].name+
+                " for sale."
+            );
+
+            break;
+
+        }
+
+    }
 
 
-            if (
-                companyIndex ===
-                currentPlayer
-            ) {
+    /*
+        Try buying an opponent stock.
+    */
 
-                map.classList.add(
-                    "active-company"
-                );
+    if(!actionDone){
+
+        const possible=[];
+
+        for(let sellerIndex=0;
+            sellerIndex<companies.length;
+            sellerIndex++){
+
+            if(sellerIndex===currentPlayer){
+                continue;
+            }
+
+            const seller=companies[sellerIndex];
+
+            for(let stockIndex=0;
+                stockIndex<seller.stocks.length;
+                stockIndex++){
+
+                const stock=seller.stocks[stockIndex];
+
+                if(!stock.open){
+                    continue;
+                }
+
+                const maximum=
+                    stock.value+
+                    Math.max(...stock.changes);
+
+                if(bot.cash>=maximum){
+
+                    possible.push({
+                        sellerIndex,
+                        stockIndex,
+                        stock
+                    });
+
+                }
 
             }
 
+        }
 
-            let stocksHTML = "";
+        if(possible.length>0){
 
+            /*
+                Randomly choose an affordable open stock.
+            */
 
-            company.stocks.forEach(
-                (stock, stockIndex) => {
+            const choice=
+                possible[
+                    Math.floor(
+                        Math.random()*possible.length
+                    )
+                ];
 
-                    let buttons = "";
-
-
-                    /*
-                        Your own stock:
-                        open / close and
-                        sell to bank.
-                    */
-
-                    if (
-                        companyIndex ===
-                        currentPlayer &&
-                        incomeRolled
-                    ) {
-
-                        buttons += `
-
-                            <button
-                                onclick="toggleStock(
-                                    ${companyIndex},
-                                    ${stockIndex}
-                                )"
-                            >
-                                ${stock.open
-                                    ? "CLOSE SALE"
-                                    : "OPEN FOR SALE"}
-                            </button>
-
-                            <button
-                                onclick="sellToBank(
-                                    ${stockIndex}
-                                )"
-                            >
-                                SELL TO BANK
-                            </button>
-
-                        `;
-
-                    }
-
-
-                    /*
-                        Other player's
-                        open stock:
-                        buy button.
-                    */
-
-                    if (
-                        companyIndex !==
-                        currentPlayer &&
-                        stock.open &&
-                        incomeRolled
-                    ) {
-
-                        buttons += `
-
-                            <button
-                                onclick="buyStock(
-                                    ${companyIndex},
-                                    ${stockIndex}
-                                )"
-                            >
-                                BUY
-                            </button>
-
-                        `;
-
-                    }
-
-
-                    stocksHTML += `
-
-                        <div class="stock
-                            ${stock.open ? "open" : ""}">
-
-                            <div class="stock-name">
-                                ${stock.name}
-                            </div>
-
-                            <div class="stock-value">
-                                $${stock.value}
-                            </div>
-
-                            <div class="stock-number">
-                                Stock ${stockIndex + 1}
-                            </div>
-
-                            <div class="stock-status">
-                                ${stock.open
-                                    ? "OPEN FOR SALE"
-                                    : "NOT FOR SALE"}
-                            </div>
-
-                            ${buttons}
-
-                        </div>
-
-                    `;
-
-                }
+            botBuyStock(
+                choice.sellerIndex,
+                choice.stockIndex
             );
 
-
-            map.innerHTML = `
-
-                <div class="company-title">
-
-                    <h2>
-                        ${company.name}
-                    </h2>
-
-                    <div class="cash">
-                        CASH: $${company.money}
-                    </div>
-
-                </div>
-
-                <div class="stock-map">
-                    ${stocksHTML}
-                </div>
-
-            `;
-
-
-            container.appendChild(map);
+            actionDone=true;
 
         }
+
+    }
+
+
+    /*
+        If bot did nothing, sometimes sell a stock
+        to the bank.
+    */
+
+    if(!actionDone && bot.stocks.length>1){
+
+        if(Math.random()<0.45){
+
+            botSellToBank(0);
+
+            actionDone=true;
+
+        }
+
+    }
+
+
+    /*
+        Sometimes close an open stock, but never the last one.
+    */
+
+    if(!actionDone){
+
+        const openStocks=
+            bot.stocks.filter(s=>s.open);
+
+        if(
+            openStocks.length>1 &&
+            Math.random()<0.3
+        ){
+
+            const stock=openStocks[0];
+
+            stock.open=false;
+
+            ensureOneOpen(bot);
+
+            log(
+                bot.name+
+                " closed "+
+                stock.name+
+                " for sale."
+            );
+
+            actionDone=true;
+
+        }
+
+    }
+
+
+    /*
+        Finish bot turn.
+    */
+
+    lastActionTaken=actionDone;
+
+    setTimeout(()=>{
+
+        finishCurrentTurn();
+
+    },700);
+
+}
+
+
+/* =========================================================
+   BOT BUY
+========================================================= */
+
+function botBuyStock(sellerIndex,stockIndex){
+
+    const buyer=companies[currentPlayer];
+
+    const seller=companies[sellerIndex];
+
+    const stock=seller.stocks[stockIndex];
+
+    if(!stock || !stock.open){
+        return false;
+    }
+
+    const maximum=
+        stock.value+
+        Math.max(...stock.changes);
+
+    if(buyer.cash<maximum){
+        return false;
+    }
+
+    const dice=rollDie();
+
+    const change=stock.changes[dice-1];
+
+    const price=stock.value+change;
+
+    buyer.cash-=price;
+
+    seller.cash+=price;
+
+    seller.stocks.splice(stockIndex,1);
+
+    stock.open=false;
+
+    buyer.stocks.push(stock);
+
+    ensureOneOpen(seller);
+
+    log(
+        buyer.name+
+        " bought "+
+        stock.name+
+        " from "+
+        seller.name+
+        " for "+
+        price+
+        " (roll "+dice+")."
+    );
+
+    checkRoundEnd();
+
+    return true;
+
+}
+
+
+/* =========================================================
+   BOT SELL TO BANK
+========================================================= */
+
+function botSellToBank(stockIndex){
+
+    const bot=companies[currentPlayer];
+
+    const stock=bot.stocks[stockIndex];
+
+    if(!stock){
+        return false;
+    }
+
+    bot.cash+=stock.value;
+
+    bot.stocks.splice(stockIndex,1);
+
+    stock.open=false;
+
+    bankStocks.push(stock);
+
+    log(
+        bot.name+
+        " sold "+
+        stock.name+
+        " to the bank for "+
+        stock.value+"."
+    );
+
+    if(bot.stocks.length===0){
+
+        checkRoundEnd();
+
+        return true;
+
+    }
+
+    ensureOneOpen(bot);
+
+    return true;
+
+}
+
+
+/* =========================================================
+   CHECK ROUND END
+========================================================= */
+
+function checkRoundEnd(){
+
+    if(roundEnding || gameOver){
+        return;
+    }
+
+    const winnerOfRound=
+        companies.find(c=>c.stocks.length===0);
+
+    if(!winnerOfRound){
+        return;
+    }
+
+    roundEnding=true;
+
+    log(
+        "ROUND "+currentRound+
+        " ENDED because "+
+        winnerOfRound.name+
+        " has no stocks left."
+    );
+
+    setTimeout(showRoundEnd,500);
+
+}
+
+
+/* =========================================================
+   ROUND END
+========================================================= */
+
+function showRoundEnd(){
+
+    document.getElementById("roundReason").textContent=
+        "A company has sold all of its stocks. Now every company may sell ALL of its remaining stocks to the bank or keep them.";
+
+    const buttons=
+        document.getElementById("roundChoiceButtons");
+
+    buttons.innerHTML="";
+
+    /*
+        If user has stocks, let them choose.
+        If user has none, automatically continue.
+    */
+
+    const player=companies[0];
+
+    if(player.stocks.length===0){
+
+        const text=document.createElement("p");
+
+        text.textContent=
+            "You have no stocks left, so you cannot sell anything else.";
+
+        buttons.appendChild(text);
+
+        const b=document.createElement("button");
+
+        b.className="big";
+
+        b.textContent="Continue";
+
+        b.onclick=finishRoundForHuman;
+
+        buttons.appendChild(b);
+
+    }else{
+
+        const sell=document.createElement("button");
+
+        sell.className="sell big";
+
+        sell.textContent="Sell ALL my stocks to the bank";
+
+        sell.onclick=()=>{
+
+            sellAllToBank(player);
+
+            finishRoundForHuman();
+
+        };
+
+        const keep=document.createElement("button");
+
+        keep.className="keep big";
+
+        keep.textContent="Keep my stocks";
+
+        keep.onclick=finishRoundForHuman;
+
+        buttons.appendChild(sell);
+
+        buttons.appendChild(keep);
+
+    }
+
+    document
+        .getElementById("roundModal")
+        .classList.remove("hidden");
+
+}
+
+
+/* =========================================================
+   HUMAN FINISH ROUND
+========================================================= */
+
+function finishRoundForHuman(){
+
+    document
+        .getElementById("roundModal")
+        .classList.add("hidden");
+
+    /*
+        Bots choose automatically.
+        Their decision is intentionally simple for now.
+    */
+
+    for(let i=1;i<companies.length;i++){
+
+        const bot=companies[i];
+
+        if(bot.stocks.length===0){
+            continue;
+        }
+
+        /*
+            Bots are more likely to cash out
+            when they have a lot of stocks.
+        */
+
+        const stockValue=
+            bot.stocks.reduce(
+                (sum,s)=>sum+s.value,
+                0
+            );
+
+        if(stockValue>=2000 || Math.random()<0.5){
+
+            sellAllToBank(bot);
+
+        }else{
+
+            log(
+                bot.name+
+                " kept its remaining stocks."
+            );
+
+        }
+
+    }
+
+    /*
+        Save score of this round.
+    */
+
+    for(let company of companies){
+
+        company.scoreHistory.push(company.cash);
+
+    }
+
+    /*
+        If this was the final round,
+        finish the game.
+    */
+
+    if(currentRound>=totalRounds){
+
+        finishGame();
+
+        return;
+
+    }
+
+    /*
+        Otherwise start next round.
+    */
+
+    currentRound++;
+
+    turnNumber=1;
+
+    currentPlayer=0;
+
+    incomeRolled=false;
+
+    roundEnding=false;
+
+    lastActionTaken=false;
+
+    /*
+        Reshuffle money deck.
+    */
+
+    createMoneyDeck();
+
+    /*
+        Every company gets 5 new random stocks.
+    */
+
+    for(let company of companies){
+
+        giveFiveStocks(company);
+
+    }
+
+    log("================================");
+
+    log(
+        "ROUND "+
+        currentRound+
+        " BEGINS!"
+    );
+
+    log(
+        "Every company received 5 new stocks."
+    );
+
+    log(
+        "The money deck was reshuffled."
+    );
+
+    updateScreen();
+
+    startTurn();
+
+}
+
+
+/* =========================================================
+   FINISH GAME
+========================================================= */
+
+function finishGame(){
+
+    gameOver=true;
+
+    roundEnding=false;
+
+    updateScreen();
+
+    const sorted=
+        [...companies].sort(
+            (a,b)=>b.cash-a.cash
+        );
+
+    let html="";
+
+    html+="<h3>Final Results</h3>";
+
+    sorted.forEach((company,index)=>{
+
+        html+=
+            "<p><strong>"+
+            (index+1)+
+            ". "+
+            company.name+
+            "</strong> — "+
+            company.cash+
+            " cash</p>";
+
+    });
+
+    const winner=sorted[0];
+
+    html+=
+        "<hr><h2>"+
+        winner.name+
+        " WINS!</h2>";
+
+    html+=
+        "<p>"+
+        "Final wealth: "+
+        winner.cash+
+        "</p>";
+
+    document.getElementById("finalResults").innerHTML=html;
+
+    document
+        .getElementById("gameOverModal")
+        .classList.remove("hidden");
+
+    log(
+        "GAME OVER! "+
+        winner.name+
+        " is the richest company!"
     );
 
 }
 
+
+/* =========================================================
+   RENDER SCREEN
+========================================================= */
+
+function updateScreen(){
+
+    if(companies.length===0){
+        return;
+    }
+
+    document.getElementById("roundDisplay").textContent=
+        currentRound;
+
+    document.getElementById("turnDisplay").textContent=
+        turnNumber;
+
+    document.getElementById("currentPlayerDisplay").textContent=
+        companies[currentPlayer].name;
+
+    document.getElementById("totalRoundsDisplay").textContent=
+        totalRounds;
+
+    renderActions();
+
+    renderCompanies();
+
+}
+
+
+/* =========================================================
+   RENDER ACTIONS
+========================================================= */
+
+function renderActions(){
+
+    const company=companies[currentPlayer];
+
+    const status=document.getElementById("status");
+
+    const buttons=document.getElementById("actionButtons");
+
+    buttons.innerHTML="";
+
+    if(gameOver){
+
+        status.textContent="Game Over";
+
+        return;
+
+    }
+
+    if(roundEnding){
+
+        status.textContent="Round ending...";
+
+        return;
+
+    }
+
+    if(company.bot){
+
+        status.textContent=
+            "🤖 "+company.name+
+            " is thinking...";
+
+        /*
+            No buttons for human while bot is active.
+        */
+
+        return;
+
+    }
+
+    status.textContent=
+        "Your turn";
+
+    if(!incomeRolled){
+
+        const roll=document.createElement("button");
+
+        roll.className="big";
+
+        roll.textContent="🎲 ROLL FOR INCOME";
+
+        roll.onclick=rollIncome;
+
+        buttons.appendChild(roll);
+
+        return;
+
+    }
+
+    const end=document.createElement("button");
+
+    end.className="big";
+
+    end.textContent="END TURN";
+
+    end.onclick=endTurn;
+
+    buttons.appendChild(end);
+
+}
+
+
+/* =========================================================
+   RENDER COMPANIES
+========================================================= */
+
+function renderCompanies(){
+
+    const container=
+        document.getElementById("companies");
+
+    container.innerHTML="";
+
+    companies.forEach((company,companyIndex)=>{
+
+        const box=document.createElement("div");
+
+        box.className="company";
+
+        if(companyIndex===currentPlayer){
+
+            box.classList.add("active");
+
+        }
+
+        const title=document.createElement("h2");
+
+        title.textContent=
+            company.name+
+            (company.bot ? " 🤖" : " 👤");
+
+        box.appendChild(title);
+
+        const stats=document.createElement("div");
+
+        stats.className="companyStats";
+
+        const cash=document.createElement("div");
+
+        cash.className="stat cash";
+
+        cash.textContent=
+            "Cash: "+company.cash;
+
+        stats.appendChild(cash);
+
+        const stockCount=document.createElement("div");
+
+        stockCount.className="stat";
+
+        stockCount.textContent=
+            "Stocks: "+company.stocks.length;
+
+        stats.appendChild(stockCount);
+
+        const inactive=document.createElement("div");
+
+        inactive.className="stat";
+
+        inactive.textContent=
+            "Inactive turns: "+company.nothingTurns;
+
+        stats.appendChild(inactive);
+
+        box.appendChild(stats);
+
+        const grid=document.createElement("div");
+
+        grid.className="stockGrid";
+
+        company.stocks.forEach((stock,stockIndex)=>{
+
+            const card=document.createElement("div");
+
+            card.className="stock";
+
+            card.classList.add(
+                stock.open ?
+                "openStock" :
+                "closedStock"
+            );
+
+            const name=document.createElement("div");
+
+            name.className="stockName";
+
+            name.textContent=stock.name;
+
+            card.appendChild(name);
+
+            const value=document.createElement("div");
+
+            value.className="stockValue";
+
+            value.textContent=
+                "Base value: "+stock.value;
+
+            card.appendChild(value);
+
+            const status=document.createElement("div");
+
+            status.className="stockStatus";
+
+            status.classList.add(
+                stock.open ?
+                "openText" :
+                "closedText"
+            );
+
+            status.textContent=
+                stock.open ?
+                "OPEN FOR SALE" :
+                "NOT FOR SALE";
+
+            card.appendChild(status);
+
+
+            /*
+                Current player's own stocks.
+            */
+
+            if(
+                companyIndex===currentPlayer &&
+                !company.bot &&
+                !roundEnding
+            ){
+
+                const toggle=document.createElement("button");
+
+                toggle.className=
+                    stock.open ?
+                    "close" :
+                    "open";
+
+                toggle.textContent=
+                    stock.open ?
+                    "CLOSE" :
+                    "OPEN FOR SALE";
+
+                toggle.onclick=()=>{
+                    toggleStock(stockIndex);
+                };
+
+                card.appendChild(toggle);
+
+
+                const sell=document.createElement("button");
+
+                sell.className="bank";
+
+                sell.textContent=
+                    "SELL TO BANK";
+
+                sell.onclick=()=>{
+                    sellToBank(stockIndex);
+                };
+
+                card.appendChild(sell);
+
+            }
+
+
+            /*
+                Open stocks belonging to another player.
+            */
+
+            if(
+                companyIndex!==currentPlayer &&
+                stock.open &&
+                !roundEnding &&
+                !company.bot &&
+                companies[currentPlayer] &&
+                !companies[currentPlayer].bot &&
+                incomeRolled
+            ){
+
+                const maximum=
+                    stock.value+
+                    Math.max(...stock.changes);
+
+                const buy=document.createElement("button");
+
+                buy.className="buy";
+
+                buy.textContent=
+                    "BUY";
+
+                /*
+                    Buyer must be able to afford
+                    the maximum possible price.
+                */
+
+                buy.disabled=
+                    companies[currentPlayer].cash<
+                    maximum;
+
+                buy.onclick=()=>{
+                    buyStock(
+                        companyIndex,
+                        stockIndex
+                    );
+                };
+
+                card.appendChild(buy);
+
+            }
+
+            grid.appendChild(card);
+
+        });
+
+        box.appendChild(grid);
+
+        container.appendChild(box);
+
+    });
+
+}
+
+
+/* =========================================================
+   INITIAL SCREEN
+========================================================= */
+
 </script>
 
-</body>
-</html>
 </body>
 </html>
